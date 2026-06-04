@@ -1304,3 +1304,4 @@ export default function AppLayout() {
 <button class="settings-btn" id="settingsBtn" aria-label="Settings">
   ⚙️
 </button>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
