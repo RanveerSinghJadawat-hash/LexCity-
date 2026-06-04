@@ -1469,3 +1469,224 @@ export default function AppLayout() {
   </p>
 
 </section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexcity - Notary Services</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="family">
+    
+    <style>
+        /* --- Reset & Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #ffffff;
+            color: #2b2321;
+            line-height: 1.6;
+        }
+
+        /* --- Header Section --- */
+        header {
+            background-color: #3a2e2b; /* Deep brown color from image */
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #d4af37; /* Gold accent color */
+            text-align: center;
+        }
+
+        /* Temporary CSS placeholder for the logo icon */
+        .logo-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .logo-text {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        .logo-slogan {
+            font-size: 9px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #baa49e;
+            margin-top: 2px;
+        }
+
+        /* Navigation */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: #e3dedc;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 400;
+            padding-bottom: 6px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            color: #ffffff;
+            border-bottom: 2px solid #ffffff;
+        }
+
+        /* --- Main Hero Section --- */
+        .hero-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            gap: 5%;
+        }
+
+        /* Image Triptych (3-column grid) */
+        .image-gallery {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            height: 450px;
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Applies the stark black & white look from the reference image */
+            filter: grayscale(100%) contrast(110%); 
+        }
+
+        /* Content Side */
+        .hero-content {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero-content h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 48px;
+            font-weight: 400;
+            line-height: 1.2;
+            letter-spacing: 2px;
+            color: #3a2e2b;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            color: #555;
+            font-weight: 300;
+            margin-bottom: 35px;
+        }
+
+        /* Button styling */
+        .btn-appointment {
+            display: inline-block;
+            padding: 12px 35px;
+            border: 1px solid #3a2e2b;
+            background-color: transparent;
+            color: #3a2e2b;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-appointment:hover {
+            background-color: #3a2e2b;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 968px) {
+            .hero-container {
+                flex-direction: column-reverse;
+                gap: 40px;
+                margin: 30px auto;
+            }
+            
+            .image-gallery {
+                width: 100%;
+                height: 350px;
+            }
+
+            .hero-content h1 {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .image-gallery {
+                height: 250px;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <div class="logo-icon">⚖️</div>
+            <div class="logo-text">LEXCITY.</div>
+            <div class="logo-slogan">Slogan Here</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Our Clients</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="hero-container">
+        
+        <section class="image-gallery">
+            <img class="gallery-item" src="https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&q=80&w=400" alt="Signing document">
+            <img class="gallery-item" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400" alt="Professional portrait">
+            <img class="gallery-item" src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=400" alt="Lady Justice">
+        </section>
+
+        <section class="hero-content">
+            <h1>Get It<br>Notarized</h1>
+            <p>Sealing the deal, one signature at a time.</p>
+            <a href="#" class="btn-appointment">Book Appointment</a>
+        </section>
+
+    </main>
+
+</body>
+</html>
