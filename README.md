@@ -21,11 +21,14 @@
             background-color: #ffffff;
             color: #2b2321;
             line-height: 1.6;
+            width: 100%;
+            overflow-x: hidden;
         }
 
-        /* --- Header Section --- */
+        /* --- Header Section (Fixed to be a long, full-width rectangle) --- */
         header {
             background-color: #3a2e2b; 
+            width: 100%; /* Ensures it stretches completely from left to right */
             padding: 20px 8%;
             display: flex;
             justify-content: space-between;
@@ -60,7 +63,7 @@
             margin-top: 2px;
         }
 
-        /* Navigation */
+        /* Navigation Links */
         nav ul {
             display: flex;
             list-style: none;
@@ -81,24 +84,25 @@
             border-bottom: 2px solid #ffffff;
         }
 
-        /* --- Main Hero Section (Modified for Vertical Stack) --- */
+        /* --- Main Layout Container --- */
         .hero-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 40px;
-            /* Changed to column to stack images above text */
+            padding: 40px 20px;
             display: flex;
             flex-direction: column; 
             gap: 40px;
+            align-items: center;
         }
 
-        /* Image Triptych stretching across the top */
+        /* Image Triptych (Positioned below header, above text) */
         .image-gallery {
             width: 100%;
+            max-width: 900px; /* Limits the gallery width slightly so it looks elegant */
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-            height: 350px; /* Reduced height slightly so it fits nicely on top */
+            height: 350px; 
         }
 
         .gallery-item {
@@ -108,7 +112,7 @@
             filter: grayscale(100%) contrast(110%); 
         }
 
-        /* Content Side (Now below the images) */
+        /* Content Side */
         .hero-content {
             width: 100%;
             text-align: center;
@@ -154,6 +158,11 @@
 
         /* --- Responsive Design --- */
         @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px 4%;
+            }
             .image-gallery {
                 height: 250px;
                 gap: 8px;
