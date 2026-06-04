@@ -1016,3 +1016,67 @@ gap: 1.5rem;            /* Puts clean spacing between the stacked cards */
         alert("Entering LexCity as a Guest!");
     }
 </script>
+<div class="app-container">
+  <button class="settings-btn" aria-label="Settings">
+    <i class="fas fa-cog"></i> </button>
+
+  <h1>Welcome to the App</h1>
+</div>
+.app-container {
+  position: relative; /* Establishes a positioning context */
+  width: 100%;
+  height: 100vh;
+  padding: 20px;
+}
+
+.settings-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  transition: transform 0.3s ease;
+}
+
+/* Subtle spin effect on hover */
+.settings-btn:hover {
+  transform: rotate(45deg);
+  color: #007bff;
+}
+import React, { useState } from 'react';
+import { Settings } from 'lucide-react'; // Clean icon library
+
+export default function AppLayout() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="relative min-h-screen w-full bg-gray-50 p-6">
+      
+      {/* Top Right Settings Button */}
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="absolute top-6 right-6 p-2 rounded-full text-gray-600 hover:bg-gray-200 hover:text-gray-900 transition-all duration-200"
+        aria-label="Open settings"
+      >
+        <Settings className="w-6 h-6 animate-hover:spin" />
+      </button>
+
+      {/* Simple Dropdown Menu Menu */}
+      {isOpen && (
+        <div className="absolute top-16 right-6 w-48 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50">
+          <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account</button>
+          <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Preferences</button>
+          <hr className="my-1 border-gray-200" />
+          <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Logout</button>
+        </div>
+      )}
+
+      <main>
+        <h1 className="text-2xl font-bold">Main Content Area</h1>
+      </main>
+    </div>
+  );
+}
