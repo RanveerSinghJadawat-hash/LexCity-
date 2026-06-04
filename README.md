@@ -1,3 +1,4 @@
+<h1 style="font-size: 3.5rem; font-weight: normal; margin-bottom: 10px;">LexCity</h1>
 <!DOCTYPE html>
 <html lang="en">
 <head>
