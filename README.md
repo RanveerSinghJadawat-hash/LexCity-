@@ -964,3 +964,55 @@ gap: 1.5rem;            /* Puts clean spacing between the stacked cards */
 <button type="button" class="btn-guest-login" onclick="handleGuestLogin()">
     Continue as Guest
 </button>
+/* --- GUEST DIVIDER & BUTTON FOR SIGN UP --- */
+.guest-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+    color: var(--text-muted, #64748b);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+.guest-divider::before, .guest-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border, #e2e8f0);
+}
+
+.guest-divider:not(:empty)::before { margin-right: .75em; }
+.guest-divider:not(:empty)::after { margin-left: .75em; }
+
+.btn-guest-login {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: transparent;
+    color: var(--text-main, #334155);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 6px;
+    font-family: var(--font-sans), sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-guest-login:hover {
+    background-color: var(--bg-light, #f8fafc);
+    color: var(--primary, #0f172a);
+}
+<script>
+    function handleGuestLogin() {
+        // Find your main signup screen container/overlay ID
+        // If it's called 'auth-overlay', this will hide it smoothly:
+        const mainOverlay = document.getElementById('auth-overlay') || document.querySelector('.auth-container');
+        
+        if (mainOverlay) {
+            mainOverlay.style.display = 'none';
+        }
+        
+        alert("Entering LexCity as a Guest!");
+    }
+</script>
