@@ -651,3 +651,171 @@ gap: 1.5rem;            /* Puts clean spacing between the stacked cards */
         margin-bottom: 0;
     }
 </style>
+<div id="report-modal" class="modal-overlay">
+    <div class="modal-card">
+        <button class="modal-close" onclick="closeReportModal()">&times;</button>
+        <h2 class="modal-title">Submit a Community Report</h2>
+        <p class="modal-subtitle">Provide details regarding the localized systemic issue.</p>
+        
+        <form id="issue-form" onsubmit="handleFormSubmit(event)">
+            <div class="form-group">
+                <label class="form-label" for="issue-category">Category</label>
+                <select id="issue-category" class="form-input" required>
+                    <option value="HOUSING / ZONING">Housing / Zoning</option>
+                    <option value="LABOR RIGHTS">Labor Rights</option>
+                    <option value="ENVIRONMENTAL">Environmental</option>
+                    <option value="CIVIL RIGHTS">Civil Rights</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="issue-title">Issue Title</label>
+                <input type="text" id="issue-title" class="form-input" placeholder="e.g., Unlawful Eviction Notices Issued in Ward 4" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="issue-description">Description</label>
+                <textarea id="issue-description" class="form-input" rows="4" placeholder="Describe the systemic issue and its impact on the community..." required></textarea>
+            </div>
+            
+            <button type="submit" class="btn-submit-report">Submit Report</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Modal Background Overlay */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(15, 23, 42, 0.6); /* Translucent dark slate */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        padding: 20px;
+        box-sizing: border-box;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    /* Active class to show modal */
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .modal-card {
+        background-color: var(--bg-card, #ffffff);
+        border: 1px solid var(--border, #e2e8f0);
+        border-radius: 8px;
+        padding: 2rem 1.5rem;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: var(--shadow);
+        position: relative;
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1.25rem;
+        background: none;
+        border: none;
+        font-size: 1.75rem;
+        color: var(--text-muted, #64748b);
+        cursor: pointer;
+    }
+
+    .modal-title {
+        font-family: var(--font-serif), serif;
+        color: var(--primary, #0f172a);
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .modal-subtitle {
+        color: var(--text-muted, #64748b);
+        font-size: 0.875rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-submit-report {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: var(--accent, #b45309);
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        font-family: var(--font-sans), sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-submit-report:hover {
+        background-color: var(--accent-hover, #92400e);
+    }
+</style>
+
+<script>
+    // 1. Hook up your existing "Report an Issue" button
+    document.addEventListener("DOMContentLoaded", function() {
+        // Find the button that contains the text "Report an Issue"
+        const reportBtn = Array.from(document.querySelectorAll('button, a')).find(el => el.textContent.trim() === 'Report an Issue');
+        
+        if(reportBtn) {
+            // Overwrite its action to open our modal popup
+            reportBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('report-modal').classList.add('active');
+            });
+        }
+    });
+
+    // 2. Functions to control modal closure
+    function closeReportModal() {
+        document.getElementById('report-modal').classList.remove('active');
+        document.getElementById('issue-form').reset();
+    }
+
+    // 3. Handle when a user submits their new issue
+    function handleFormSubmit(event) {
+        event.preventDefault();
+        
+        const category = document.getElementById('issue-category').value;
+        const title = document.getElementById('issue-title').value;
+        const description = document.getElementById('issue-description').value;
+        
+        // Find your existing container where the other cards sit
+        // We'll look for standard container names or inject it near the top
+        const reportsContainer = document.querySelector('.report-cards-container') || document.querySelector('[class*="card"]').parentElement;
+        
+        if (reportsContainer) {
+            // Build a matching card element HTML structure
+            const newCardHtml = `
+                <div class="report-card" style="background: var(--bg-card, #fff); border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 1.5rem; margin-bottom: 1.25rem; box-shadow: var(--shadow);">
+                    <span style="font-size: 0.75rem; font-weight: 700; color: var(--accent, #b45309); text-transform: uppercase; letter-spacing: 0.05em;">${category}</span>
+                    <h3 style="font-family: var(--font-serif), serif; color: var(--primary, #0f172a); font-size: 1.2rem; margin: 0.5rem 0;">${title}</h3>
+                    <p style="color: var(--text-main, #334155); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1rem;">${description}</p>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted, #64748b);">
+                        <span>Just now</span>
+                        <span style="color: var(--success, #15803d); font-weight: 500;">✓ Review Pending</span>
+                    </div>
+                </div>
+            `;
+            
+            // Insert it at the very top of your list
+            reportsContainer.insertAdjacentHTML('afterbegin', newCardHtml);
+        }
+        
+        // Close modal and alert success
+        closeReportModal();
+        alert("Thank you! Your report has been submitted for review.");
+    }
+</script>
