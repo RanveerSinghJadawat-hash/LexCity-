@@ -1301,3 +1301,6 @@ export default function AppLayout() {
 
 </body>
 </html>
+<button class="settings-btn" id="settingsBtn" aria-label="Settings">
+  ⚙️
+</button>
