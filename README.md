@@ -581,3 +581,7 @@
     max-width: 100%;
     box-sizing: border-box; /* Prevents padding from forcing horizontal stretch */
 }
+display: flex;
+flex-direction: column; /* This will force them to stack down instead of going sideways */
+width: 100%;
+gap: 1.5rem;            /* Puts clean spacing between the stacked cards */
