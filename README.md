@@ -819,3 +819,143 @@ gap: 1.5rem;            /* Puts clean spacing between the stacked cards */
         alert("Thank you! Your report has been submitted for review.");
     }
 </script>
+<!-- --- LOGIN & GUEST ACCESS POPUP MODAL --- -->
+<div id="login-modal" class="modal-overlay">
+    <div class="modal-card">
+        <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+        <h2 class="modal-title">Welcome Back</h2>
+        <p class="modal-subtitle">Log in to your LexCity account or browse anonymously.</p>
+        
+        <form id="login-form" onsubmit="handleLoginSubmit(event)">
+            <div class="form-group">
+                <label class="form-label" for="login-email">Email Address</label>
+                <input type="email" id="login-email" class="form-input" placeholder="you@example.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="login-password">Password</label>
+                <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+            </div>
+            
+            <button type="submit" class="btn-submit-login">Log In</button>
+        </form>
+
+        <!-- The Guest Access Divider & Button -->
+        <div class="guest-divider"><span>OR</span></div>
+        
+        <button type="button" class="btn-guest-login" onclick="handleGuestLogin()">
+            Continue as Guest
+        </button>
+    </div>
+</div>
+
+<!-- --- STYLING & FUNCTIONALITY --- -->
+<style>
+    /* Reuses overlay setup, ensures styling matches your system tokens */
+    .guest-divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 1.5rem 0;
+        color: var(--text-muted, #64748b);
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+    }
+
+    .guest-divider::before, .guest-divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid var(--border, #e2e8f0);
+    }
+
+    .guest-divider:not(:empty)::before { margin-right: .75em; }
+    .guest-divider:not(:empty)::after { margin-left: .75em; }
+
+    .btn-submit-login {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: var(--primary, #0f172a); /* Deep slate login button */
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        font-family: var(--font-sans), sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-submit-login:hover {
+        background-color: var(--primary-light, #1e293b);
+    }
+
+    .btn-guest-login {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: transparent;
+        color: var(--text-main, #334155);
+        border: 1px solid var(--border, #e2e8f0);
+        border-radius: 6px;
+        font-family: var(--font-sans), sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .btn-guest-login:hover {
+        background-color: var(--bg-light, #f8fafc);
+        color: var(--primary, #0f172a);
+    }
+</style>
+
+<script>
+    // 1. Hook up all your existing "Log in" text links dynamically
+    document.addEventListener("DOMContentLoaded", function() {
+        // Find links that say "Log in"
+        const loginLinks = Array.from(document.querySelectorAll('.auth-link, a')).filter(el => el.textContent.trim().toLowerCase() === 'log in');
+        
+        loginLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('login-modal').classList.add('active');
+            });
+        });
+    });
+
+    // 2. Control Login Modal close
+    function closeLoginModal() {
+        document.getElementById('login-modal').classList.remove('active');
+        document.getElementById('login-form').reset();
+    }
+
+    // 3. Handle Standard Login Submit
+    function handleLoginSubmit(event) {
+        event.preventDefault();
+        closeLoginModal();
+        
+        // If your initial sign-up screen is still covering the main page, dismiss it too
+        const mainOverlay = document.getElementById('auth-overlay');
+        if (mainOverlay) {
+            mainOverlay.style.opacity = '0';
+            mainOverlay.style.visibility = 'hidden';
+        }
+        
+        alert("Logged in successfully!");
+    }
+
+    // 4. Handle Guest Login (Bypasses verification fields)
+    function handleGuestLogin() {
+        closeLoginModal();
+        
+        // Instantly clear out your splash screen/sign-up screen if it is active
+        const mainOverlay = document.getElementById('auth-overlay');
+        if (mainOverlay) {
+            mainOverlay.style.opacity = '0';
+            mainOverlay.style.visibility = 'hidden';
+        }
+        
+        alert("Entering LexCity as a Guest. Some direct case tracking features may require a profile.");
+    }
+</script>
