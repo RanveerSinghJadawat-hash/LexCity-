@@ -568,3 +568,16 @@
     border-radius: 8px;
     box-shadow: var(--shadow);
 }
+/* Container for your "Recent Community Reports" articles */
+.report-cards-container {
+    display: flex;
+    flex-direction: column; /* Force articles to stack BELOW each other */
+    gap: 1.25rem;           /* Clean spacing between stacked articles */
+    width: 100%;
+}
+
+.auth-card, .report-card {
+    width: 100%;            /* Keeps them perfectly slim to fit mobile screens */
+    max-width: 100%;
+    box-sizing: border-box; /* Prevents padding from forcing horizontal stretch */
+}
