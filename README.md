@@ -1359,3 +1359,36 @@ export default function AppLayout() {
   })();
 </script>
 <h1 style="font-size: 3.5rem; font-weight: normal; margin-bottom: 10px;">LexCity</h1>
+<section style="
+  max-width: 800px; 
+  margin: 40px auto; 
+  padding: 0 20px; 
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif; /* Matches your serif style */
+">
+  
+  <p style="
+    color: #b86229; 
+    font-size: 0.75rem; 
+    text-transform: uppercase; 
+    letter-spacing: 2px; 
+    font-weight: bold; 
+    margin-bottom: 12px;
+    font-family: sans-serif;
+  ">
+    Our Mission
+  </p>
+
+  <p style="
+    font-size: 1.15rem; 
+    line-height: 1.75; 
+    color: #4a4a4a; 
+    margin: 0 auto;
+    max-width: 680px;
+  ">
+    LexCity is dedicated to transparency, accountability, and community empowerment. 
+    By bridging the gap between open-source civic reporting and legal advocacy, 
+    we ensure local issues are documented accurately and handled with institutional weight.
+  </p>
+
+</section>
