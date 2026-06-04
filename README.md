@@ -336,3 +336,179 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexCity - Sign Up</title>
+    <style>
+        /* --- DESIGN SYSTEM TOKENS --- */
+        :root {
+            --primary: #0f172a;       /* Deep Slate */
+            --primary-light: #1e293b;
+            --accent: #b45309;        /* Muted Amber */
+            --accent-hover: #92400e;
+            --text-main: #334155;     /* Dark Gray */
+            --text-muted: #64748b;    /* Secondary Gray */
+            --bg-light: #f8fafc;      /* Soft Off-White */
+            --bg-card: #ffffff;
+            --border: #e2e8f0;        /* Subtle Border */
+            --success: #15803d;       /* Professional Green */
+            --font-sans: 'Inter', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.1);
+        }
+
+        /* --- BASE STYLES --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- SIGN UP LAYOUT & CARD --- */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: var(--shadow);
+        }
+
+        .auth-title {
+            font-family: var(--font-serif);
+            color: var(--primary);
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .auth-subtitle {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* --- FORM ELEMENTS --- */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background-color: #ffffff;
+            color: var(--text-main);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.15);
+        }
+
+        /* --- BUTTONS & LINKS --- */
+        .btn-submit {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--accent);
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-top: 0.5rem;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .auth-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2 class="auth-title">Create an Account</h2>
+            <p class="auth-subtitle">Join LexCity to get started</p>
+            
+            <form id="signup-form" action="#" method="POST">
+                <div class="form-group">
+                    <label for="fullname" class="form-label">Full Name</label>
+                    <input type="text" id="fullname" name="fullname" class="form-input" placeholder="John Doe" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn-submit">Sign Up</button>
+            </form>
+            
+            <div class="auth-footer">
+                Already have an account? <a href="#" class="auth-link">Log in</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
