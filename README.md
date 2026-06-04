@@ -1358,3 +1358,4 @@ export default function AppLayout() {
     });
   })();
 </script>
+<h1 style="font-size: 3.5rem; font-weight: normal; margin-bottom: 10px;">LexCity</h1>
