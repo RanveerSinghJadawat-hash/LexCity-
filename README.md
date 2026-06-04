@@ -1305,3 +1305,56 @@ export default function AppLayout() {
   ⚙️
 </button>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<div style="position: fixed; top: 20px; right: 20px; z-index: 9999; font-family: sans-serif;">
+  
+  <button id="settingsBtn" style="background: #ffffff; border: 1px solid #ccc; font-size: 24px; cursor: pointer; padding: 10px; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.15);" aria-label="Settings">
+    ⚙️
+  </button>
+  
+  <div id="settingsMenu" style="position: absolute; top: 55px; right: 0; width: 200px; background-color: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); padding: 10px 0; display: none; flex-direction: column;">
+    <div style="padding: 8px 16px; font-size: 14px; color: #333; display: flex; justify-content: space-between; align-items: center;">
+      <span>Dark Mode</span>
+      <input type="checkbox" id="darkModeToggle" style="cursor: pointer;">
+    </div>
+    <button style="padding: 8px 16px; font-size: 14px; color: #333; background: none; border: none; text-align: left; cursor: pointer;" onclick="alert('Account settings')">Account Details</button>
+    <hr style="border: 0; border-top: 1px solid #eee; margin: 8px 0;">
+    <button style="padding: 8px 16px; font-size: 14px; color: #e53e3e; background: none; border: none; text-align: left; cursor: pointer; font-weight: bold;" onclick="alert('Logged out')">Log Out</button>
+  </div>
+
+</div>
+
+<script>
+  (function() {
+    const btn = document.getElementById('settingsBtn');
+    const menu = document.getElementById('settingsMenu');
+    const toggle = document.getElementById('darkModeToggle');
+
+    // Toggle menu visibility
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (menu.style.display === 'none' || menu.style.display === '') {
+        menu.style.display = 'flex';
+      } else {
+        menu.style.display = 'none';
+      }
+    });
+
+    // Close menu if clicking anywhere else
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && e.target !== btn) {
+        menu.style.display = 'none';
+      }
+    });
+
+    // Simple Dark Mode Toggle
+    toggle.addEventListener('change', () => {
+      if (toggle.checked) {
+        document.body.style.backgroundColor = '#1e1e24';
+        document.body.style.color = '#ffffff';
+      } else {
+        document.body.style.backgroundColor = '#ffffff';
+        document.body.style.color = '#000000';
+      }
+    });
+  })();
+</script>
