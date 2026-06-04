@@ -1080,3 +1080,224 @@ export default function AppLayout() {
     </div>
   );
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App with Settings</title>
+  
+  <!-- FontAwesome for the Gear Icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* Basic Page Setup */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f4f7f6;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+      padding: 40px;
+    }
+
+    /* Dark Mode Styles */
+    body.dark-theme {
+      background-color: #1e1e24;
+      color: #fff;
+    }
+    body.dark-theme .settings-menu {
+      background-color: #2a2a35;
+      border-color: #444;
+      color: #fff;
+    }
+    body.dark-theme .menu-item {
+      color: #eee;
+    }
+    body.dark-theme .menu-item:hover {
+      background-color: #3a3a4a;
+    }
+
+    /* --- Settings Container (Top Right) --- */
+    .settings-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    /* The Gear Button */
+    .settings-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: inherit;
+      padding: 10px;
+      border-radius: 50px;
+      transition: transform 0.4s ease, background-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .settings-btn:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+      transform: rotate(45deg);
+    }
+    
+    body.dark-theme .settings-btn:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* The Dropdown Menu */
+    .settings-menu {
+      position: absolute;
+      top: 50px;
+      right: 0;
+      width: 220px;
+      background-color: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 8px 0;
+      display: none; /* Hidden by default */
+      flex-direction: column;
+    }
+
+    /* Show class triggered by JS */
+    .settings-menu.show {
+      display: flex;
+    }
+
+    /* Menu Items */
+    .menu-item {
+      padding: 10px 20px;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      font-size: 14px;
+      color: #444;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+    }
+
+    .menu-item:hover {
+      background-color: #f5f5f5;
+    }
+
+    .menu-divider {
+      border-top: 1px solid #eee;
+      margin: 6px 0;
+    }
+
+    /* Toggle Switch Styles */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 34px;
+      height: 20px;
+    }
+
+    .switch input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: .3s;
+      border-radius: 20px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(14px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SETTINGS COMPONENT -->
+  <div class="settings-container">
+    <button class="settings-btn" id="settingsBtn" aria-label="Settings">
+      <i class="fa-solid fa-gear"></i>
+    </button>
+    
+    <div class="settings-menu" id="settingsMenu">
+      <div class="menu-item">
+        <span>Dark Mode</span>
+        <label class="switch">
+          <input type="checkbox" id="darkModeToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <button class="menu-item" onclick="alert('Account settings clicked!')">Account Details</button>
+      <button class="menu-item" onclick="alert('Notifications clicked!')">Notifications</button>
+      <div class="menu-divider"></div>
+      <button class="menu-item" style="color: #e53e3e;" onclick="alert('Logged out!')">Log Out</button>
+    </div>
+  </div>
+
+  <!-- MAIN PAGE CONTENT -->
+  <main>
+    <h1>My Awesome App</h1>
+    <p>Click the gear icon in the top right corner to customize your preferences.</p>
+  </main>
+
+  <!-- JAVASCRIPT FOR INTERACTION -->
+  <script>
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsMenu = document.getElementById('settingsMenu');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+
+    // 1. Toggle Menu Visibility
+    settingsBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Prevents immediate closing
+      settingsMenu.classList.toggle('show');
+    });
+
+    // 2. Close Menu if clicking anywhere else on screen
+    document.addEventListener('click', (e) => {
+      if (!settingsMenu.contains(e.target) && e.target !== settingsBtn) {
+        settingsMenu.classList.remove('show');
+      }
+    });
+
+    // 3. Dark Mode Toggle Logic
+    darkModeToggle.addEventListener('change', () => {
+      document.body.classList.toggle('dark-theme');
+    });
+  </script>
+
+</body>
+</html>
