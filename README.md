@@ -337,6 +337,82 @@
 
 </body>
 </html>
+<section style="
+  max-width: 800px; 
+  margin: 50px auto; 
+  padding: 35px 25px; 
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+  background-color: #fffaf7; /* Ultra-light tangerine tint to make it pop softly */
+  border: 2px solid #f28500; /* Crisp Tangerine border */
+  border-radius: 8px;        /* Smooth, modern rectangular edges */
+  box-shadow: 0 4px 15px rgba(242, 133, 0, 0.05); /* Soft matching shadow */
+">
+  
+  <div style="margin-bottom: 35px;">
+    <p style="
+      color: #b86229; 
+      font-size: 0.75rem; 
+      text-transform: uppercase; 
+      letter-spacing: 2px; 
+      font-weight: bold; 
+      margin-bottom: 12px;
+      font-family: sans-serif;
+    ">
+      Our Motive
+    </p>
+
+    <p style="
+      font-size: 1.15rem; 
+      line-height: 1.8; 
+      color: #222222; 
+      margin: 0 auto;
+      max-width: 680px;
+    ">
+      LexCity was built to give everyday citizens a voice against institutional injustices. 
+      Our core motive is to democratize legal awareness and provide communities with a 
+      secure, transparent platform to document systemic issues, ensuring they can no longer be ignored.
+    </p>
+  </div>
+
+  <hr style="border: 0; border-top: 1px solid rgba(242, 133, 0, 0.2); margin: 30px auto; max-width: 80%;">
+
+  <div style="margin-top: 25px;">
+    <p style="
+      color: #b86229; 
+      font-size: 0.75rem; 
+      text-transform: uppercase; 
+      letter-spacing: 2px; 
+      font-weight: bold; 
+      margin-bottom: 12px;
+      font-family: sans-serif;
+    ">
+      About the Founder
+    </p>
+
+    <h3 style="
+      font-size: 1.5rem; 
+      font-weight: normal; 
+      color: #111111; 
+      margin-bottom: 10px;
+    ">
+      Ranveer Singh Jadawat
+    </h3>
+
+    <p style="
+      font-size: 1.05rem; 
+      line-height: 1.7; 
+      color: #555555; 
+      margin: 0 auto;
+      max-width: 640px;
+    ">
+      Driven by a passion for intersectional civic tech and legal transparency, Ranveer engineered 
+      LexCity to turn scattered local complaints into structured, verifiable data. His vision 
+      is to create an open-source hub that seamlessly connects legal advocates with the public.
+    </p>
+  </div>
+
+</section>
 <!DOCTYPE html>
 <html lang="en">
 <head>
