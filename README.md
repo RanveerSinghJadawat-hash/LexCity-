@@ -585,3 +585,69 @@ display: flex;
 flex-direction: column; /* This will force them to stack down instead of going sideways */
 width: 100%;
 gap: 1.5rem;            /* Puts clean spacing between the stacked cards */
+<div class="about-container">
+    <div class="about-card">
+        <div class="founder-badge">Founder & CEO</div>
+        <h2 class="about-title">About the Creator</h2>
+        <p class="about-text">
+            As the Founder and CEO of LexCity, my goal is to reshape how our communities handle institutional and systemic issues. LexCity was born out of a necessity to empower individuals and give them a voice where they are often left unheard.
+        </p>
+
+        <h2 class="about-title" style="margin-top: 1.5rem;">Our Motive</h2>
+        <p class="about-text">
+            The fundamental motive of LexCity is to bridge the gap between citizens reporting localized systemic injustices and verified legal professionals. We exist to transform raw community reports into legally documented evidence, providing a transparent, secure channel that holds power accountable and drives real institutional change.
+        </p>
+    </div>
+</div>
+
+<style>
+    /* --- ABOUT & MOTIVE MOBILE-FIRST STYLES --- */
+    .about-container {
+        width: 100%;
+        margin: 3rem 0 2rem 0;
+        padding: 0 10px; /* Prevents text from touching phone screen edges */
+        box-sizing: border-box;
+    }
+
+    .about-card {
+        background-color: var(--bg-card, #ffffff);
+        border: 1px solid var(--border, #e2e8f0);
+        border-radius: 8px;
+        padding: 2rem 1.5rem;
+        box-shadow: var(--shadow, 0 4px 6px -1px rgba(15, 23, 42, 0.1));
+        position: relative;
+    }
+
+    .founder-badge {
+        display: inline-block;
+        background-color: var(--accent, #b45309);
+        color: #ffffff;
+        font-family: var(--font-sans), sans-serif;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        border-radius: 4px;
+        margin-bottom: 0.75rem;
+        letter-spacing: 0.05em;
+    }
+
+    .about-title {
+        font-family: var(--font-serif), serif;
+        color: var(--primary, #0f172a);
+        font-size: 1.4rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .about-text {
+        color: var(--text-main, #334155);
+        font-family: var(--font-sans), sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+
+    .about-text:last-child {
+        margin-bottom: 0;
+    }
+</style>
