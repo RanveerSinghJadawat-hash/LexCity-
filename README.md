@@ -959,3 +959,8 @@ gap: 1.5rem;            /* Puts clean spacing between the stacked cards */
         alert("Entering LexCity as a Guest. Some direct case tracking features may require a profile.");
     }
 </script>
+<div class="guest-divider"><span>OR</span></div>
+
+<button type="button" class="btn-guest-login" onclick="handleGuestLogin()">
+    Continue as Guest
+</button>
