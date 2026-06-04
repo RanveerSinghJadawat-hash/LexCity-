@@ -3,6 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexCity - Legal & Notary Services</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Reset & Base Layout --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #ffffff;
+            color: #2b2321;
+            line-height: 1.6;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* --- Full Width Header --- */
+        header {
+            background-color: #3a2e2b; 
+            width: 100%; 
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #d4af37; 
+            text-align: center;
+        }
+
+        .logo-text {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        .logo-slogan {
+            font-size: 9px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #baa49e;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: #e3dedc;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* --- Global Structural Container --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* --- Hero Section (Stacked Rectangle Layout) --- */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        /* The Horizontal Rectangle Triptych Image Gallery */
+        .image-gallery {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            height: 240px; 
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
+            filter: grayscale(100%) contrast(110%); 
+        }
+
+        .hero-content h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 42px;
+            color: #3a2e2b;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .hero-content p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* --- Core Layout Section (Fixes the squeezed text bug) --- */
+        .main-info-section {
+            width: 100%;
+            background-color: #fcfbfa;
+            border: 1px solid #f0edea;
+            padding: 40px 30px;
+            text-align: center;
+            border-radius: 4px;
+            margin-bottom: 60px;
+        }
+
+        .tagline {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #b3764d;
+            margin-bottom: 15px;
+        }
+
+        .main-info-section h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 32px;
+            line-height: 1.3;
+            color: #2b2321;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .description {
+            font-size: 15px;
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto 35px auto;
+        }
+
+        /* --- Interactive Buttons --- */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            max-width: 280px;
+            padding: 14px 0;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #b3764d;
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #945d37;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #2b2321;
+            border: 1px solid #2b2321;
+        }
+
+        .btn-secondary:hover {
+            background-color: #2b2321;
+            color: #ffffff;
+        }
+
+        /* --- Footer/Reports Heading --- */
+        .reports-heading {
+            border-top: 1px solid #e8e5e2;
+            padding-top: 40px;
+            text-align: left;
+        }
+
+        .reports-heading h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            color: #2b2321;
+        }
+
+        .reports-heading p {
+            font-size: 13px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        /* --- Desktop Optimization Media Query --- */
+        @media (min-width: 768px) {
+            .button-group {
+                flex-direction: row;
+                gap: 20px;
+            }
+            .image-gallery {
+                height: 280px;
+            }
+            .hero-content h1 {
+                font-size: 52px;
+            }
+            .main-info-section h2 {
+                font-size: 38px;
+            }
+            .main-info-section {
+                padding: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <div class="logo-text">LEXCITY</div>
+            <div class="logo-slogan">Slogan Here</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Services</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        
+        <section class="hero-section">
+            <div class="image-gallery">
+                <img class="gallery-item" src="https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&q=80&w=600" alt="Signing">
+                <img class="gallery-item" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=600" alt="Portrait">
+                <img class="gallery-item" src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=600" alt="Justice">
+            </div>
+
+            <div class="hero-content">
+                <h1>Get It Notarized</h1>
+                <p>Sealing the deal, one signature at a time.</p>
+            </div>
+        </section>
+
+        <section class="main-info-section">
+            <div class="tagline">Civic Legal Hub</div>
+            <h2>Documenting Injustices. Empowering Communities.</h2>
+            <p class="description">
+                LexCity bridges the gap between citizens reporting localized systemic issues and verified legal professionals ready to drive institutional accountability.
+            </p>
+            
+            <div class="button-group">
+                <a href="#" class="btn btn-primary">Report an Issue</a>
+                <a href="#" class="btn btn-secondary">Attorney Portal</a>
+            </div>
+        </section>
+
+        <footer class="reports-heading">
+            <h3>Recent Community Reports</h3>
+            <p>Verified local accounts pending review or legally documented.</p>
+        </footer>
+
+    </main>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lexcity - Notary Services</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
