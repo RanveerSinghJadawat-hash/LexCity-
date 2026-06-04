@@ -548,3 +548,23 @@
 
 </body>
 </html>
+/* --- THE FIX FOR HORIZONTAL STRETCHING --- */
+.main-website {
+    width: 100%;
+    max-width: 650px;       /* Keeps the text from stretching too wide */
+    margin: 0 auto;         /* Perfectly centers the content on the screen */
+    padding: 40px 20px;     /* Adds breathing room on the sides for mobile */
+    display: flex;
+    flex-direction: column; /* Stacks everything neatly from top to bottom */
+    gap: 20px;              /* Adds clean spacing between elements */
+}
+
+/* This forces extra vertical space so you can actually test the scrolling */
+.scroll-space {
+    margin-top: 40px;
+    padding: 30px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
