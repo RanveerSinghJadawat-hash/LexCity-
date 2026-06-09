@@ -3,262 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lexcity - 3D Concept</title>
+    <title>Lexcity - Trusted Legal Partnerships</title>
     <style>
-        /* Reset and layout */
+        /* Global Variables for Exact Brand Palette */
+        :root {
+            --dark-chocolate: #382d26;
+            --premium-gold: #d7b57c;
+            --gold-shadow: #b2935e;
+            --text-dark: #221a15;
+            --white-glow: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Base Configuration */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100%;
-            overflow-x: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b0f19; /* Deep executive blue/black */
-            color: #ffffff;
+            font-family: 'Times New Roman', Times, serif; /* Gives the classic legal look */
+            background-color: var(--dark-chocolate);
+            color: var(--premium-gold);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        /* The 3D Canvas fixed behind everything */
-        #webgl-background {
-            position: fixed;
-            top: 0;
-            left: 0;
+        /* --- 1. HEADER COMPONENT --- */
+        header {
+            background-color: var(--dark-chocolate);
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--premium-gold);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .logo-area {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        /* 3D Scale Emblem Simulated placeholder */
+        .logo-icon {
+            font-size: 2rem;
+            line-height: 1;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            /* 3D Chiseled Text Effect */
+            text-shadow: 1px 1px 0px var(--gold-shadow), 2px 2px 3px rgba(0,0,0,0.6);
+        }
+
+        .logo-slogan {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            margin-top: -2px;
+        }
+
+        nav a {
+            color: var(--premium-gold);
+            text-decoration: none;
+            font-size: 1.1rem;
+            margin-left: 25px;
+            padding-bottom: 4px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        }
+
+        nav a.active {
+            border-bottom: 2px solid var(--premium-gold);
+            text-shadow: 0px 0px 8px var(--white-glow);
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        /* --- 2. MAIN 3D DISPLAY MODULE --- */
+        main {
+            background-color: var(--premium-gold);
+            color: var(--text-dark);
+            padding: 60px 8%;
+            flex-grow: 1;
+            /* Recessed Bevel Frame effect around the golden center core */
+            box-shadow: 
+                inset 0 10px 20px rgba(0,0,0,0.3), 
+                inset 0 -10px 20px rgba(0,0,0,0.3),
+                0 10px 30px rgba(0,0,0,0.5);
+            border-top: 4px solid #f3dcaf;
+            border-bottom: 4px solid #a3814c;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+            letter-spacing: 1px;
+            /* Sculpted dark 3D text styling */
+            text-shadow: 
+                0 1px 0px #edd8b4,
+                1px 2px 0px #cbb082,
+                2px 3px 1px #91784f,
+                3px 5px 6px rgba(0,0,0,0.4);
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            font-style: italic;
+            margin: 0 0 50px 0;
+            color: #403229;
+        }
+
+        /* Grid Configuration for Showcase Cards */
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            /* Prepares parent container viewport for proper 3D transformations */
+            perspective: 1000px; 
+        }
+
+        .showcase-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            /* Enables native 3D interaction parameters */
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s ease;
+        }
+
+        .image-frame {
+            width: 100%;
+            aspect-ratio: 1.5 / 1;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #221a15;
+            /* Box frame depth shadow mapping */
+            box-shadow: 
+                0 15px 35px rgba(0,0,0,0.35),
+                inset 0 0 15px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 20px;
+        }
+
+        .image-frame img {
             width: 100%;
             height: 100%;
-            z-index: 1; /* Sits behind text content */
-            pointer-events: none; /* Allows user to click through to text links */
+            object-fit: cover;
+            display: block;
+            opacity: 0.9;
+            transition: transform 0.5s ease;
         }
 
-        /* Front-end content layer */
-        .content-layer {
-            position: relative;
-            z-index: 2; /* Sits on top of the 3D canvas */
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 100px 20px;
-            text-align: center;
+        .item-label {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.5);
         }
 
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        /* --- INTERACTIVE 3D EFFECTS ON HOVER --- */
+        .showcase-item:hover {
+            /* Tilts card upward slightly and lifts off surface space */
+            transform: translateY(-10px) rotateX(6deg) scale(1.02);
+            box-shadow: 0 25px 40px rgba(0,0,0,0.3);
         }
 
-        p {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: #cbd5e1;
-            margin-bottom: 40px;
+        .showcase-item:hover .image-frame img {
+            transform: scale(1.06); /* Subtle internal zoom */
         }
 
-        .cta-btn {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            font-size: 1rem;
+
+        /* --- 3. EXECUTIVE FOOTER --- */
+        footer {
+            background-color: var(--dark-chocolate);
+            padding: 30px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(215, 181, 124, 0.3);
+            font-size: 0.9rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            flex-direction: column;
+            opacity: 0.8;
+        }
+
+        .footer-logo .f-title {
             font-weight: bold;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
 
-        .cta-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+        .footer-logo .f-sub {
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .copyright {
+            color: #a29185;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .social-links a {
+            color: var(--premium-gold);
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+        }
+
+        /* Responsive Breakpoint layout configurations for Mobile screens */
+        @media (max-width: 768px) {
+            header, footer {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            .logo-area, .footer-logo {
+                align-items: center;
+            }
+            nav {
+                margin-top: 10px;
+            }
+            nav a {
+                margin: 0 10px;
+            }
+            .hero-title {
+                font-size: 2.2rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- 3D Container -->
-    <canvas id="webgl-background"></canvas>
+    <header>
+        <div class="logo-area">
+            <div class="logo-icon">⚖</div>
+            <div class="logo-text">LexCity.</div>
+            <div class="logo-slogan">Slogan Here</div>
+        </div>
+        <nav>
+            <a href="#" class="active">Home</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
 
-    <!-- Standard Website Content -->
-    <div class="content-layer">
-        <h1>LEXCITY</h1>
-        <p>Bridging the gap between corporate legal excellence and global bilingual mastery. Explore our premium advisory services, sworn translations, and elite Legal English training modules.</p>
-        <button class="cta-btn">Explore Services</button>
-    </div>
+    <main>
+        <h1 class="hero-title">Trusted Legal Partnerships</h1>
+        <p class="hero-subtitle">Legal Excellence, Personalized Service</p>
 
-    <!-- Load Three.js from CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
-        // 1. Setup Scene, Camera, and Renderer
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('webgl-background'), antialias: true, alpha: true });
-        
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        <div class="showcase-grid">
+            
+            <div class="showcase-item">
+                <div class="image-frame">
+                    <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=600" alt="Law Bookshelf">
+                </div>
+                <div class="item-label">Growth Package</div>
+            </div>
 
-        // 2. Create Geometry - A complex, elegant Torus Knot
-        const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
-        
-        // 3. Create a Particle Material for a modern digital aesthetic
-        const material = new THREE.PointsMaterial({
-            size: 0.05,
-            color: 0x3b82f6, // Bright blue matching the corporate accent
-            transparent: true,
-            opacity: 0.7
-        });
+            <div class="showcase-item">
+                <div class="image-frame">
+                    <img src="https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&q=80&w=600" alt="Signing Contract Documents">
+                </div>
+                <div class="item-label">Estate Planning Suite</div>
+            </div>
 
-        // 4. Combine into a Points Object instead of a solid mesh
-        const particleSystem = new THREE.Points(geometry, material);
-        scene.add(particleSystem);
+            <div class="showcase-item">
+                <div class="image-frame">
+                    <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=600" alt="Lady Justice Statue">
+                </div>
+                <div class="item-label">Data Privacy Defense</div>
+            </div>
 
-        // Position camera outwards
-        camera.position.z = 30;
+        </div>
+    </main>
 
-        // Track mouse movement to add subtle parallax interactivity
-        let mouseX = 0;
-        let mouseY = 0;
-        document.addEventListener('mousemove', (event) => {
-            mouseX = (event.clientX - window.innerWidth / 2) * 0.05;
-            mouseY = (event.clientY - window.innerHeight / 2) * 0.05;
-        });
+    <footer>
+        <div class="footer-logo">
+            <span class="f-title">LexCity.</span>
+            <span class="f-sub">Slogan Here</span>
+        </div>
+        <div class="copyright">
+            &copy; 2026 by LexCity. All Rights Reserved.
+        </div>
+        <div class="social-links">
+            <a href="#" title="Facebook">facebook</a>
+            <a href="#" title="Instagram">instagram</a>
+            <a href="#" title="X">X</a>
+        </div>
+    </footer>
 
-        // 5. Animation Loop
-        const clock = new THREE.Clock();
-
-        function animate() {
-            requestAnimationFrame(animate);
-
-            const elapsedTime = clock.getElapsedTime();
-
-            // Constant passive rotation
-            particleSystem.rotation.x = elapsedTime * 0.05;
-            particleSystem.rotation.y = elapsedTime * 0.1;
-
-            // Subtle mouse tracking interpolation
-            camera.position.x += (mouseX - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY - camera.position.y) * 0.05;
-            camera.lookAt(scene.position);
-
-            renderer.render(scene, camera);
-        }
-
-        animate();
-
-        // 6. Handle Window Resizing smoothly
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-    </script>
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lexcity - Professional 3D Concept</title>
-    <style>
-        /* Reset and layout */
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b0f19; 
-            color: #ffffff;
-            scroll-behavior: smooth; /* Enables elegant cinematic scrolling */
-        }
-
-        /* Fixed 3D Canvas Background */
-        #webgl-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1; 
-            pointer-events: none; 
-        }
-
-        /* Main Wrapper to allow scrolling over fixed background */
-        .page-wrapper {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-        }
-
-        /* Hero / Landing Section */
-        .hero-section {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 0 20px;
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        /* Advanced 3D Extrusion Effect for Header */
-        h1.three-d-text {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: #ffffff;
-            letter-spacing: 4px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            text-shadow: 
-                0 1px 0 #cccccc,
-                0 2px 0 #c5c5c5,
-                0 3px 0 #bbbbbb,
-                0 4px 0 #b5b5b5,
-                0 5px 0 #aaaaaa,
-                0 6px 1px rgba(0,0,0,.1),
-                0 0 5px rgba(0,0,0,.1),
-                0 1px 3px rgba(0,0,0,.3),
-                0 3px 5px rgba(0,0,0,.2),
-                0 5px 10px rgba(0,0,0,.25),
-                0 10px 10px rgba(0,0,0,.2),
-                0 20px 20px rgba(0,0,0,.15);
-        }
-
-        p.hero-description {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: #cbd5e1;
-            max-width: 700px;
-            margin-bottom: 40px;
-        }
-
-        /* Premium Call To Action Button */
-        .cta-btn {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
-            border: none;
-            padding: 16px 40px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.7);
-        }
-
-        /* Dynamic Services Section Target */
-        .services-section {
-            min-height: 100vh;
-            padding: 100px 20px;
-            background: rgba(11, 15, 25, 0.85); /* Frosty transparent overlay */
-            backdrop-filter: blur(10px); /* Blurs out the 3D shapes slightly when viewing items */
-            -webkit-backdrop-filter: blur(10px);
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column
