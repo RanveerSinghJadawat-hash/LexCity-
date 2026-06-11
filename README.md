@@ -1,627 +1,601 @@
-name": "LexCity",
-"version": "1.0.0",
-"private": true,
-"scripts": {
-"dev": "next dev -p 3000",
-"build": "next build",
-"start": "next start",
-"prisma:generate": "prisma generate",
-"prisma:migrate": "prisma migrate dev"
-},
-"dependencies": {
-"@prisma/client": "^5.15.1",
-"bcryptjs": "^2.4.3",
-"next": "14.2.4",
-"next-auth": "^4.24.7",
-"react": "18.2.0",
-"react-dom": "18.2.0",
-"zod": "^3.23.8"
-},
-"devDependencies": {
-"autoprefixer": "^10.4.18",
-"postcss": "^8.4.38",
-"prisma": "^5.15.1",
-"tailwindcss": "^3.4.4",
-"typescript": "^5.4.5"
-}
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexcity - Civic Legal Hub</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
 
-.env.example
-env
-For dev, SQLite is simplest
- 
-DATABASE_URL="file:./dev.db"
+        body {
+            background-color: #d1b48c; /* Warm tan/gold color */
+            color: #2b2321; /* Dark brown for text */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-NextAuth
- 
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="replace-with-a-strong-random-secret"
+        /* Header Styles */
+        header {
+            background-color: #2b2321; /* Deep chocolate brown */
+            padding: 20px 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-prisma/schema.prisma
-prisma
-generator client {
-provider = "prisma-client-js"
-}
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
 
-datasource db {
-provider = "sqlite"
-url      = env("DATABASE_URL")
-}
+        .logo-icon {
+            color: #d1b48c;
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
 
-model User {
-id                String   @id @default(cuid())
-name              String?
-email             String   @unique
-passwordHash     String
-isLawyerVerified  Boolean  @default(false)
-barId             String?
-barState          String?
-city              String?
-bio               String?
-createdAt         DateTime @default(now())
-updatedAt         DateTime @updatedAt
-posts             Post[]
-}
+        .brand-name {
+            color: #d1b48c;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
-enum PostType {
-ARTICLE
-ISSUE
-}
+        .slogan {
+            color: #a89275;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
 
-model Post {
-id          String   @id @default(cuid())
-title       String
-content     String
-type        PostType
-city        String?
-tags        String[]
-authorId    String
-author      User     @relation(fields: [authorId], references: [id])
-createdAt   DateTime @default(now())
-updatedAt   DateTime @updatedAt
-status      String   @default("PUBLISHED") // For issues: OPEN, IN_PROGRESS, RESOLVED possible later
-}
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
 
-tailwind.config.js
-js
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-content: ["./src/*/.{js,ts,jsx,tsx}"],
-theme: {
-extend: {
-colors: {
-navy: "#0E1A2B",
-gold: "#C9A86A",
-slate: "#6B7280"
-}
-}
-},
-plugins: []
-};
+        nav a:hover, nav a.active {
+            color: #d1b48c;
+            border-bottom: 2px solid #d1b48c;
+            padding-bottom: 4px;
+        }
 
-postcss.config.js
-js
-module.exports = {
-plugins: {
-tailwindcss: {},
-autoprefixer: {}
-}
-};
+        /* Main Content Section Wrapper */
+        .main-content {
+            padding: 60px 80px 80px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
 
-src/styles/globals.css
-css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+        .hero-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
 
-html, body { height: 100%; }
-body { @apply bg-white text-slate; }
-a { @apply text-navy hover:underline; }
-.btn { @apply inline-flex items-center justify-center rounded-md px-4 py-2 font-medium transition-colors; }
-.btn-primary { @apply bg-navy text-white hover:bg-black; }
-.btn-secondary { @apply bg-gold text-navy hover:opacity-90; }
-.card { @apply rounded-lg border border-gray-200 p-4 shadow-sm bg-white; }
-.input { @apply w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gold; }
-.label { @apply text-sm font-medium text-navy; }
+        .hero-title {
+            font-size: 44px;
+            font-weight: 700;
+            color: #2b2321;
+            margin-bottom: 10px;
+        }
 
-src/lib/prisma.ts
-ts
-import { PrismaClient } from "@prisma/client";
+        .hero-subtitle {
+            font-size: 18px;
+            color: #443734;
+            font-weight: 400;
+        }
 
-declare global {
-var prisma: PrismaClient | undefined;
-}
+        /* --- NEW: Civic Legal Hub Action Section --- */
+        .civic-hub-section {
+            background-color: #fcfbfa; /* Off-white background matching the image */
+            border-radius: 8px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 60px;
+            width: 100%;
+        }
 
-export const prisma = global.prisma ?? new PrismaClient();
+        .hub-tagline {
+            color: #b06330; /* Rust/orange accent color */
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
 
-if (process.env.NODE_ENV !== "production") global.prisma = prisma;
+        .hub-main-statement {
+            font-family: 'Georgia', serif; /* Serif font for dramatic emphasis */
+            font-size: 32px;
+            color: #1a1514;
+            font-weight: 500;
+            line-height: 1.3;
+            max-width: 800px;
+            margin: 0 auto 25px auto;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-src/pages/_app.tsx
-tsx
-import "@/styles/globals.css";
-import type { AppProps } from "next/app";
-import { SessionProvider } from "next-auth/react";
-import Layout from "@/components/Layout";
+        .hub-divider {
+            border: 0;
+            height: 1px;
+            background: #e6e3df;
+            max-width: 700px;
+            margin: 0 auto 25px auto;
+        }
 
-export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-return (
-<SessionProvider session={session}>
-<Layout>
-<Component {...pageProps} />
-</Layout>
-</SessionProvider>
-);
-}
+        .hub-description {
+            font-size: 16px;
+            color: #574c49;
+            line-height: 1.6;
+            max-width: 750px;
+            margin: 0 auto 35px auto;
+        }
 
-src/components/Layout.tsx
-tsx
-import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
-import React from "react";
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-const { data: session } = useSession();
+        .btn {
+            width: 100%;
+            max-width: 320px;
+            padding: 14px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-return (
-<div className="min-h-screen flex flex-col">
-<header className="border-b bg-white">
-<div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-<Link href="/" className="text-xl font-semibold text-navy">CivicLaw Voices</Link>
-<nav className="flex gap-4 items-center">
-<Link href="/articles" className="hover:underline">Articles</Link>
-<Link href="/issues" className="hover:underline">City Issues</Link>
-{session?.user ? (
-<>
-<Link href="/publish" className="btn btn-secondary">Publish</Link>
-<Link href={/profile/${(session.user as any).id}} className="hover:underline">Profile</Link>
-<button className="btn btn-primary" onClick={() => signOut()}>Sign out</button>
-</>
-) : (
-<>
-<Link href="/signup" className="btn btn-secondary">Join as Lawyer</Link>
-<button className="btn btn-primary" onClick={() => signIn()}>Sign in</button>
-</>
-)}
-</nav>
-</div>
-</header>
-<main className="flex-1">
-<div className="mx-auto max-w-6xl px-4 py-8">{children}</div>
-</main>
-<footer className="border-t">
-<div className="mx-auto max-w-6xl px-4 py-6 text-sm text-gray-500">
-© {new Date().getFullYear()} CivicLaw Voices • Built for verified lawyers and communities
-</div>
-</footer>
-</div>
-);
-}
+        .btn-report {
+            background-color: #b06330; /* Rust orange fill */
+            color: #ffffff;
+            border: none;
+        }
 
-src/pages/index.tsx
-tsx
-import Link from "next/link";
+        .btn-report:hover {
+            background-color: #945125;
+            box-shadow: 0 4px 12px rgba(176, 99, 48, 0.3);
+        }
 
-export default function Home() {
-return (
-<div className="grid gap-10">
-<section className="text-center py-16 bg-[linear-gradient(135deg,#0E1A2B,transparent)] rounded-xl text-white">
-<h1 className="text-4xl md:text-5xl font-bold">Amplify Your Legal Voice</h1>
-<p className="mt-4 text-lg opacity-90">Verified lawyers publish city issues and legal insights to inform and advocate.</p>
-<div className="mt-8 flex justify-center gap-4">
-<Link href="/signup" className="btn btn-secondary">Join as a Lawyer</Link>
-<Link href="/articles" className="btn btn-primary bg-white text-navy hover:bg-gray-100">Explore Articles</Link>
-</div>
-</section>
+        .btn-portal {
+            background-color: transparent;
+            color: #111625; /* Very dark blue/black text */
+            border: 2px solid #111625;
+        }
 
-<section className="grid md:grid-cols-2 gap-6">
-<div className="card">
-<h3 className="text-xl font-semibold text-navy">City Problem Hub</h3>
-<p className="mt-2 text-gray-600">Report and track civic issues by location with legal context and solutions.</p>
-<Link href="/issues" className="mt-4 inline-block text-navy underline">Browse City Issues →</Link>
-</div>
-<div className="card">
-<h3 className="text-xl font-semibold text-navy">Articles Library</h3>
-<p className="mt-2 text-gray-600">Read vetted legal insights by verified attorneys across jurisdictions.</p>
-<Link href="/articles" className="mt-4 inline-block text-navy underline">Explore Articles →</Link>
-</div>
-</section>
-</div>
-);
-}
+        .btn-portal:hover {
+            background-color: #111625;
+            color: #ffffff;
+        }
+        /* --- End of Action Section --- */
 
-src/pages/signup.tsx
-tsx
-import { FormEvent, useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/router";
+        /* Grid / Cards Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
 
-export default function SignUp() {
-const [form, setForm] = useState({ name: "", email: "", password: "" });
-const [loading, setLoading] = useState(false);
-const router = useRouter();
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-async function onSubmit(e: FormEvent) {
-e.preventDefault();
-setLoading(true);
-const res = await fetch("/api/signup", {
-method: "POST",
-headers: { "Content-Type": "application/json" },
-body: JSON.stringify(form)
-});
-setLoading(false);
-if (res.ok) {
-await signIn("credentials", { email: form.email, password: form.password, callbackUrl: "/verify" });
-} else {
-alert("Sign up failed");
-}
-}
+        .card-image-wrapper {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
 
-return (
-<div className="max-w-md mx-auto card">
-<h1 className="text-2xl font-semibold text-navy">Create your account</h1>
-<p className="text-sm text-gray-500 mt-1">Accounts must be verified to publish.</p>
-<form className="mt-6 grid gap-4" onSubmit={onSubmit}>
-<label className="grid gap-1">
-<span className="label">Full name</span>
-<input className="input" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required />
-</label>
-<label className="grid gap-1">
-<span className="label">Email</span>
-<input type="email" className="input" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required />
-</label>
-<label className="grid gap-1">
-<span className="label">Password</span>
-<input type="password" className="input" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} required />
-</label>
-<button className="btn btn-primary" disabled={loading}>{loading ? "Creating..." : "Sign up"}</button>
-</form>
-</div>
-);
-}
+        .card-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
 
-src/pages/verify.tsx
-tsx
-import { useState, FormEvent } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+        .card-image-wrapper img:hover {
+            transform: scale(1.03);
+        }
 
-export default function Verify() {
-const { data: session } = useSession();
-const [form, setForm] = useState({ barId: "", barState: "", city: "", bio: "" });
-const [loading, setLoading] = useState(false);
-const router = useRouter();
+        .card-title {
+            font-size: 18px;
+            color: #2b2321;
+            font-weight: 500;
+            text-align: center;
+        }
 
-async function onSubmit(e: FormEvent) {
-e.preventDefault();
-setLoading(true);
-const res = await fetch("/api/verifyLawyer", {
-method: "POST",
-headers: { "Content-Type": "application/json" },
-body: JSON.stringify(form)
-});
-setLoading(false);
-if (res.ok) {
-alert("Verification submitted. In this demo, valid patterns auto-verify.");
-router.push("/publish");
-} else {
-const msg = await res.text();
-alert(msg || "Verification failed");
-}
-}
+        /* Footer Styles */
+        footer {
+            background-color: #2b2321;
+            padding: 40px 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
 
-return (
-<div className="max-w-lg mx-auto card">
-<h1 className="text-2xl font-semibold text-navy">Lawyer Verification</h1>
-<p className="text-sm text-gray-500 mt-1">Provide your bar credentials. Demo auto-approves if Bar ID starts with LAW- and 5 digits (e.g., LAW-12345).</p>
-{session ? (
-<form className="mt-6 grid gap-4" onSubmit={onSubmit}>
-<label className="grid gap-1">
-<span className="label">Bar ID</span>
-<input className="input" value={form.barId} onChange={e => setForm({ ...form, barId: e.target.value })} required />
-</label>
-<label className="grid gap-1">
-<span className="label">Bar State</span>
-<input className="input" value={form.barState} onChange={e => setForm({ ...form, barState: e.target.value })} required />
-</label>
-<label className="grid gap-1">
-<span className="label">City</span>
-<input className="input" value={form.city} onChange={e => setForm({ ...form, city: e.target.value })} />
-</label>
-<label className="grid gap-1">
-<span className="label">Short Bio</span>
-<textarea className="input" rows={4} value={form.bio} onChange={e => setForm({ ...form, bio: e.target.value })} />
-</label>
-<button className="btn btn-primary" disabled={loading}>{loading ? "Submitting..." : "Submit for Verification"}</button>
-</form>
-) : (
-<p>Please sign in to verify.</p>
-)}
-</div>
-);
-}
+        .footer-copyright {
+            color: #a89275;
+            font-size: 14px;
+        }
 
-src/pages/publish.tsx
-tsx
-import { GetServerSideProps } from "next";
-import { getSession, useSession } from "next-auth/react";
-import { useState, FormEvent } from "react";
-import { prisma } from "@/lib/prisma";
+        .social-links a {
+            color: #a89275;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-const session = await getSession(ctx);
-if (!session) return { redirect: { destination: "/api/auth/signin", permanent: false } };
-const user = await prisma.user.findUnique({ where: { email: session.user?.email || "" } });
-if (!user?.isLawyerVerified) {
-return { redirect: { destination: "/verify", permanent: false } };
-}
-return { props: {} };
-};
+        .social-links a:hover {
+            color: #ffffff;
+        }
 
-export default function Publish() {
-const { data: session } = useSession();
-const [form, setForm] = useState({ title: "", content: "", type: "ARTICLE", city: "", tags: "" });
-const [loading, setLoading] = useState(false);
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            header, .main-content, footer {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+            .hero-title {
+                font-size: 36px;
+            }
+            .hub-main-statement {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
 
-async function onSubmit(e: FormEvent) {
-e.preventDefault();
-setLoading(true);
-const res = await fetch("/api/posts", {
-method: "POST",
-headers: { "Content-Type": "application/json" },
-body: JSON.stringify({ ...form, tags: form.tags.split(",").map(t => t.trim()).filter(Boolean) })
-});
-setLoading(false);
-if (res.ok) {
-alert("Published!");
-setForm({ title: "", content: "", type: "ARTICLE", city: "", tags: "" });
-} else {
-alert("Failed to publish");
-}
-}
+    <header>
+        <div class="logo-container">
+            <div class="logo-icon">⚖</div>
+            <div class="brand-name">Lexcity.</div>
+            <div class="slogan">Slogan Here</div>
+        </div>
+        <nav>
+            <a href="#" class="active">Home</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
 
-return (
-<div className="max-w-2xl mx-auto card">
-<h1 className="text-2xl font-semibold text-navy">Publish</h1>
-<form className="mt-6 grid gap-4" onSubmit={onSubmit}>
-<label className="grid gap-1">
-<span className="label">Post Type</span>
-<select className="input" value={form.type} onChange={e => setForm({ ...form, type: e.target.value })}>
-<option value="ARTICLE">Article</option>
-<option value="ISSUE">City Issue</option>
-</select>
-</label>
-<label className="grid gap-1">
-<span className="label">Title</span>
-<input className="input" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required />
-</label>
-{form.type === "ISSUE" && (
-<label className="grid gap-1">
-<span className="label">City</span>
-<input className="input" value={form.city} onChange={e => setForm({ ...form, city: e.target.value })} required />
-</label>
-)}
-<label className="grid gap-1">
-<span className="label">Tags (comma separated)</span>
-<input className="input" value={form.tags} onChange={e => setForm({ ...form, tags: e.target.value })} />
-</label>
-<label className="grid gap-1">
-<span className="label">Content</span>
-<textarea className="input" rows={10} value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} required />
-</label>
-<button className="btn btn-primary" disabled={loading}>{loading ? "Publishing..." : "Publish"}</button>
-</form>
-</div>
-);
-}
+    <main class="main-content">
+        
+        <div class="hero-header">
+            <h1 class="hero-title">Trusted Legal Partnerships</h1>
+            <p class="hero-subtitle">Legal Excellence, Personalized Service</p>
+        </div>
 
-src/pages/articles/index.tsx
-tsx
-import { prisma } from "@/lib/prisma";
-import { GetServerSideProps } from "next";
-import Link from "next/link";
+        <section class="civic-hub-section">
+            <div class="hub-tagline">Civic Legal Hub</div>
+            <h2 class="hub-main-statement">Documenting Injustices. Empowering Communities.</h2>
+            <hr class="hub-divider">
+            <p class="hub-description">
+                LexCity bridges the gap between citizens reporting localized systemic issues and verified legal professionals ready to drive institutional accountability.
+            </p>
+            <div class="button-container">
+                <button class="btn btn-report" onclick="handleReportSubmit()">Report an Issue</button>
+                <button class="btn btn-portal" onclick="handlePortalRedirect()">Attorney Portal</button>
+            </div>
+        </section>
 
-export const getServerSideProps: GetServerSideProps = async () => {
-const posts = await prisma.post.findMany({
-where: { type: "ARTICLE" },
-orderBy: { createdAt: "desc" },
-include: { author: true }
-});
-return { props: { posts: JSON.parse(JSON.stringify(posts)) } };
-};
+        <div class="services-grid">
+            <div class="card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=600&q=80" alt="Law books on shelf">
+                </div>
+                <h3 class="card-title">Growth Package</h3>
+            </div>
 
-export default function Articles({ posts }: any) {
-return (
-<div className="grid gap-6">
-<h1 className="text-3xl font-semibold text-navy">Articles</h1>
-<div className="grid md:grid-cols-2 gap-6">
-{posts.map((p: any) => (
-<article key={p.id} className="card">
-<h3 className="text-xl font-semibold">{p.title}</h3>
-<p className="text-sm text-gray-500 mt-1">By {p.author?.name || "Unknown"} · {new Date(p.createdAt).toLocaleDateString()}</p>
-<p className="mt-3 line-clamp-3 text-gray-700">{p.content}</p>
-</article>
-))}
-</div>
-</div>
-);
-}
+            <div class="card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=600&q=80" alt="Signing legal documents">
+                </div>
+                <h3 class="card-title">Estate Planning Suite</h3>
+            </div>
 
-src/pages/issues/index.tsx
-tsx
-import { prisma } from "@/lib/prisma";
-import { GetServerSideProps } from "next";
+            <div class="card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80" alt="Lady Justice Statue">
+                </div>
+                <h3 class="card-title">Data Privacy Defense</h3>
+            </div>
+        </div>
+    </main>
 
-export const getServerSideProps: GetServerSideProps = async () => {
-const posts = await prisma.post.findMany({
-where: { type: "ISSUE" },
-orderBy: { createdAt: "desc" },
-include: { author: true }
-});
-return { props: { posts: JSON.parse(JSON.stringify(posts)) } };
-};
+    <footer>
+        <div class="logo-container">
+            <div class="brand-name" style="font-size: 16px;">Lexcity.</div>
+            <div class="slogan" style="font-size: 8px;">Slogan Here</div>
+        </div>
+        <div class="footer-copyright">
+            &copy; 2026 by Lexcity. All Rights Reserved.
+        </div>
+        <div class="social-links">
+            <a href="#" aria-label="Facebook">f</a>
+            <a href="#" aria-label="Instagram">i</a>
+            <a href="#" aria-label="X">X</a>
+        </div>
+    </footer>
 
-export default function Issues({ posts }: any) {
-return (
-<div className="grid gap-6">
-<h1 className="text-3xl font-semibold text-navy">City Issues</h1>
-<div className="grid gap-6">
-{posts.map((p: any) => (
-<article key={p.id} className="card">
-<div className="flex items-center justify-between">
-<h3 className="text-xl font-semibold">{p.title}</h3>
-<span className="text-xs bg-gray-100 px-2 py-1 rounded">{p.city || "N/A"}</span>
-</div>
-<p className="text-sm text-gray-500 mt-1">By {p.author?.name || "Unknown"} · {new Date(p.createdAt).toLocaleDateString()}</p>
-<p className="mt-3 text-gray-700">{p.content}</p>
-</article>
-))}
-</div>
-</div>
-);
-}
+    <script>
+        function handleReportSubmit() {
+            alert("Redirecting you to the Issue Reporting form system...");
+            // You can replace this alert with a real link: 
+            // window.location.href = "/report-form.html";
+        }
 
-src/pages/profile/[id].tsx
-tsx
-import { GetServerSideProps } from "next";
-import { prisma } from "@/lib/prisma";
+        function handlePortalRedirect() {
+            alert("Opening Secure Attorney Login Portal...");
+            // You can replace this alert with a real link: 
+            // window.location.href = "/attorney-login.html";
+        }
+    </script>
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-const id = params?.id as string;
-const user = await prisma.user.findUnique({
-where: { id },
-include: { posts: { orderBy: { createdAt: "desc" } } }
-});
-if (!user) return { notFound: true };
-return { props: { user: JSON.parse(JSON.stringify(user)) } };
-};
+</body>
+</html>
 
-export default function Profile({ user }: any) {
-return (
-<div className="grid gap-6">
-<div className="card">
-<div className="flex items-center justify-between">
-<h1 className="text-3xl font-semibold text-navy">{user.name || "Lawyer"}</h1>
-<span className={text-xs px-2 py-1 rounded ${user.isLawyerVerified ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}}>
-{user.isLawyerVerified ? "Verified Lawyer" : "Verification Pending"}
-</span>
-</div>
-<p className="text-sm text-gray-600 mt-1">{user.city || ""}</p>
-<p className="mt-3 text-gray-700">{user.bio || "No bio provided."}</p>
-{user.barId && <p className="text-xs text-gray-500 mt-2">Bar ID: {user.barId} • {user.barState}</p>}
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexcity - Trusted Legal Partnerships</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
 
-<section className="grid gap-4">
-<h2 className="text-xl font-semibold text-navy">Posts</h2>
-<div className="grid md:grid-cols-2 gap-6">
-{user.posts.map((p: any) => (
-<article key={p.id} className="card">
-<div className="flex items-center justify-between">
-<h3 className="text-lg font-semibold">{p.title}</h3>
-<span className="text-xs bg-gray-100 px-2 py-1 rounded">{p.type}</span>
-</div>
-<p className="text-sm text-gray-500 mt-1">{new Date(p.createdAt).toLocaleDateString()}</p>
-<p className="mt-2 line-clamp-3 text-gray-700">{p.content}</p>
-</article>
-))}
-</div>
-</section>
-</div>
-);
-}
+        body {
+            background-color: #d1b48c; /* Warm tan/gold color */
+            color: #2b2321; /* Dark brown for text */
+        }
 
-src/pages/api/auth/[...nextauth].ts
-ts
-import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import { prisma } from "@/lib/prisma";
-import bcrypt from "bcryptjs";
+        /* Header Styles */
+        header {
+            background-color: #2b2321; /* Deep chocolate brown */
+            padding: 20px 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-export default NextAuth({
-providers: [
-Credentials({
-name: "Credentials",
-credentials: {
-email: { label: "Email", type: "email" },
-password: { label: "Password", type: "password" }
-},
-async authorize(credentials) {
-if (!credentials?.email || !credentials?.password) return null;
-const user = await prisma.user.findUnique({ where: { email: credentials.email } });
-if (!user) return null;
-const valid = await bcrypt.compare(credentials.password, user.passwordHash);
-if (!valid) return null;
-return { id: user.id, email: user.email, name: user.name };
-}
-})
-],
-session: { strategy: "jwt" },
-pages: { signIn: "/api/auth/signin" },
-callbacks: {
-async jwt({ token, user }) {
-if (user) token.id = (user as any).id;
-return token;
-},
-async session({ session, token }) {
-if (session.user && token) (session.user as any).id = token.id as string;
-return session;
-}
-},
-secret: process.env.NEXTAUTH_SECRET
-});
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
 
-src/pages/api/signup.ts
-ts
-import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "@/lib/prisma";
-import bcrypt from "bcryptjs";
+        .logo-icon {
+            color: #d1b48c;
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-if (req.method !== "POST") return res.status(405).end();
-const { name, email, password } = req.body || {};
-if (!email || !password) return res.status(400).send("Missing fields");
-const exists = await prisma.user.findUnique({ where: { email } });
-if (exists) return res.status(400).send("Email already in use");
-const passwordHash = await bcrypt.hash(password, 10);
-await prisma.user.create({ data: { name: name || "", email, passwordHash } });
-res.status(200).end();
-}
+        .brand-name {
+            color: #d1b48c;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
-src/pages/api/verifyLawyer.ts
-ts
-import type { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth/next";
-import authOptions from "./auth/[...nextauth]";
-import { prisma } from "@/lib/prisma";
+        .slogan {
+            color: #a89275;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-if (req.method !== "POST") return res.status(405).end();
-const session = await getServerSession(req, res, (authOptions as any).authOptions || (authOptions as any));
-if (!session?.user?.email) return res.status(401).send("Unauthorized");
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
 
-const { barId, barState, city, bio } = req.body || {};
-if (!barId || !barState) return res.status(400).send("Missing bar info");
+        nav a:hover, nav a.active {
+            color: #d1b48c;
+            border-bottom: 2px solid #d1b48c;
+            padding-bottom: 4px;
+        }
 
-// Demo auto-verify rule: Bar ID like "LAW-12345"
-const auto = /^LAW-\d{5}$/.test(barId);
-const user = await prisma.user.update({
-where: { email: session.user.email },
-data: {
-barId,
-barState,
-city: city || null,
-bio: bio || null,
-isLawyerVerified: auto
-}
-});
+        /* Main Hero & Content Section */
+        .main-content {
+            padding: 80px 80px 100px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-return res.status(200).json({ verified: user.isLawyerVerified });
-}
+        .hero-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #2b2321;
+            margin-bottom: 15px;
+        }
 
-src/pages/api/posts.ts
-ts
-import type { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth/next";
-import authOptions from "./auth/[...nextauth]";
-import { prisma } from "@/lib/prisma";
+        .hero-subtitle {
+            font-size: 20px;
+            color: #443734;
+            margin-bottom: 60px;
+            font-weight: 400;
+        }
 
-export default async function handler(req: NextApiRequest, 
+        /* Grid / Cards Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-image-wrapper {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .card-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card-image-wrapper img:hover {
+            transform: scale(1.03);
+        }
+
+        .card-title {
+            font-size: 18px;
+            color: #2b2321;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #2b2321;
+            padding: 40px 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .footer-copyright {
+            color: #a89275;
+            font-size: 14px;
+        }
+
+        .social-links a {
+            color: #a89275;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #ffffff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+            header, .main-content, footer {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+            .hero-title {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <div class="logo-icon">⚖</div>
+            <div class="brand-name">Lexcity.</div>
+            <div class="slogan">Slogan Here</div>
+        </div>
+        <nav>
+            <a href="#" class="active">Home</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <h1 class="hero-title">Trusted Legal Partnerships</h1>
+        <p class="hero-subtitle">Legal Excellence, Personalized Service</p>
+
+        <div class="services-grid">
+            <div class="card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=600&q=80" alt="Law books on shelf">
+                </div>
+                <h3 class="card-title">Growth Package</h3>
+            </div>
+
+            <div class="card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=600&q=80" alt="Signing legal documents">
+                </div>
+                <h3 class="card-title">Estate Planning Suite</h3>
+            </div>
+
+            <div class="card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80" alt="Lady Justice Statue">
+                </div>
+                <h3 class="card-title">Data Privacy Defense</h3>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="logo-container">
+            <div class="brand-name" style="font-size: 16px;">Lexcity.</div>
+            <div class="slogan" style="font-size: 8px;">Slogan Here</div>
+        </div>
+        <div class="footer-copyright">
+            &copy; 2026 by Lexcity. All Rights Reserved.
+        </div>
+        <div class="social-links">
+            <a href="#" aria-label="Facebook">f</a>
+            <a href="#" aria-label="Instagram">i</a>
+            <a href="#" aria-label="X">X</a>
+        </div>
+    </footer>
+
+</body>
+</html>
