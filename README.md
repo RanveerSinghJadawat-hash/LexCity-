@@ -1,772 +1,759 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LexCivic | Amplify Your Legal Voice</title>
-    <!-- Tailwind CSS for modern utility styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Merriweather (Serif) & Inter (Sans) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
-    <!-- FontAwesome for Legal & Civic Iconography -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        navy: {
-                            DEFAULT: '#0E1A2B',
-                            light: '#1A2E4C',
-                            dark: '#070D16'
-                        },
-                        gold: {
-                            DEFAULT: '#C9A86A',
-                            light: '#DBC392',
-                            dark: '#A88544'
-                        },
-                        slate: {
-                            DEFAULT: '#6B7280',
-                            light: '#F3F4F6',
-                            dark: '#374151'
-                        }
-                    },
-                    fontFamily: {
-                        serif: ['Merriweather', 'serif'],
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['Courier New', 'monospace']
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3, .font-serif { font-family: 'Merriweather', serif; }
-        .focus-ring:focus { outline: 2px solid #C9A86A; outline-offset: 2px; }
-        @media (prefers-reduced-motion: reduce) {
-            * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
-        }
-    </style>
-</head>
-<body class="bg-gray-50 text-slate-dark min-h-screen flex flex-col selection:bg-gold selection:text-navy">
+Absolutely! I’ll generate a production-ready starter codebase so verified lawyers can sign up and publish city issues or legal articles.
 
-    <!-- NAVIGATION BAR -->
-    <nav class="bg-navy text-white sticky top-0 z-50 shadow-md border-b border-gold/20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('hero-home')">
-                    <i class="fa-solid fa-scale-balanced text-2xl text-gold"></i>
-                    <span class="text-2xl font-bold font-serif tracking-wide text-white">Lex<span class="text-gold">Civic</span></span>
-                </div>
-                <!-- Desktop Nav -->
-                <div class="hidden md:flex items-center space-x-6">
-                    <button onclick="switchView('hub')" class="hover:text-gold transition font-medium text-sm">City Problems</button>
-                    <button onclick="switchView('library')" class="hover:text-gold transition font-medium text-sm">Articles</button>
-                    <button onclick="switchView('admin')" class="hover:text-gold transition font-medium text-sm">Admin Dashboard</button>
-                    <span class="text-gold/30">|</span>
-                    <button onclick="switchView('login')" class="text-sm font-medium border border-gold text-gold hover:bg-gold hover:text-navy px-4 py-2 rounded transition">Join as a Lawyer</button>
-                </div>
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden">
-                    <button onclick="toggleMobileMenu()" class="text-gray-400 hover:text-white focus:outline-none">
-                        <i class="fa-solid fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!-- Mobile Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden bg-navy-light border-t border-gold/10 px-4 py-4 space-y-3">
-            <button onclick="switchView('hub')" class="block w-full text-left text-white hover:text-gold py-2">City Problems</button>
-            <button onclick="switchView('library')" class="block w-full text-left text-white hover:text-gold py-2">Articles</button>
-            <button onclick="switchView('admin')" class="block w-full text-left text-white hover:text-gold py-2">Admin Dashboard</button>
-            <button onclick="switchView('login')" class="block w-full text-center bg-gold text-navy font-semibold py-2 rounded">Join as a Lawyer</button>
-        </div>
-    </nav>
+Stack Overview
+Next.js (Pages Router) + React, TypeScript
+NextAuth (Credentials) for auth
+Prisma + SQLite (dev) with easy swap to Postgres
+Tailwind CSS for fast, accessible UI
 
-    <!-- MAIN APP CONTENT CONTAINERS -->
-    <main class="flex-grow">
+Quick Start
+1) Create project
+Save files below into a new folder (e.g., civiclaw-voices).
+Run: npm install
+2) Initialize DB
+Copy .env.example to .env
+npx prisma migrate dev --name init
+npx prisma db seed (optional, if you add a seed)
+3) Run
+npm run dev
+Visit http://localhost:3000
 
-        <!-- 1. HERO & HOME SECTION -->
-        <section id="hero-home" class="view-section dynamic-view">
-            <!-- Hero Banner -->
-            <div class="bg-gradient-to-br from-navy via-navy-light to-navy-dark text-white py-24 px-4 relative overflow-hidden border-b-4 border-gold">
-                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#C9A86A_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                <div class="max-w-4xl mx-auto text-center relative z-10">
-                    <div class="inline-flex items-center gap-2 bg-gold/10 border border-gold/30 text-gold px-4 py-1.5 rounded-full text-xs uppercase tracking-wider mb-6 font-semibold">
-                        <i class="fa-solid fa-gavel"></i> Civic Justice & Accountability
-                    </div>
-                    <h1 class="text-4xl sm:text-6xl font-bold tracking-tight mb-6 leading-tight">Amplify Your Legal Voice</h1>
-                    <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-10 font-light">
-                        Verified lawyers publishing city issues, structural compliance gaps, and actionable legal insights for community empowerment.
-                    </p>
-                    <div class="flex flex-col sm:flex-row justify-center gap-4">
-                        <button onclick="switchView('login')" class="bg-gold hover:bg-gold-light text-navy font-bold px-8 py-4 rounded shadow-lg transform transition active:scale-95 focus-ring">
-                            Join as a Lawyer
-                        </button>
-                        <button onclick="switchView('hub')" class="bg-transparent border-2 border-white/80 hover:border-white text-white font-semibold px-8 py-4 rounded transition backdrop-blur-sm focus-ring">
-                            Explore City Issues
-                        </button>
-                    </div>
-                </div>
-            </div>
+package.json
+json
+{
+"name": "LexCity",
+"version": "1.0.0",
+"private": true,
+"scripts": {
+"dev": "next dev -p 3000",
+"build": "next build",
+"start": "next start",
+"prisma:generate": "prisma generate",
+"prisma:migrate": "prisma migrate dev"
+},
+"dependencies": {
+"@prisma/client": "^5.15.1",
+"bcryptjs": "^2.4.3",
+"next": "14.2.4",
+"next-auth": "^4.24.7",
+"react": "18.2.0",
+"react-dom": "18.2.0",
+"zod": "^3.23.8"
+},
+"devDependencies": {
+"autoprefixer": "^10.4.18",
+"postcss": "^8.4.38",
+"prisma": "^5.15.1",
+"tailwindcss": "^3.4.4",
+"typescript": "^5.4.5"
+}
+}
 
-            <!-- Social Proof / Testimonials -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <h2 class="text-center text-xs uppercase tracking-widest text-slate font-bold mb-10">Trusted By Attorneys Nationwide</h2>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-white p-8 rounded-lg shadow-sm border-l-4 border-gold">
-                        <p class="text-slate-dark italic mb-6">"LexCivic allowed me to translate structural municipal negligence regarding local tenant rights into actionable administrative appeals. A game-changer for public interest law."</p>
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-navy text-gold flex items-center justify-center font-bold text-sm">HE</div>
-                            <div>
-                                <h4 class="font-bold text-sm">Hon. Elena Vance</h4>
-                                <p class="text-xs text-slate">Housing Rights Advocate, NY Bar</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white p-8 rounded-lg shadow-sm border-l-4 border-gold">
-                        <p class="text-slate-dark italic mb-6">"Environmental violations often escape public notice due to legal opacity. Here, we present pure raw facts alongside jurisdictional statutes for maximum impact."</p>
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-navy text-gold flex items-center justify-center font-bold text-sm">JM</div>
-                            <div>
-                                <h4 class="font-bold text-sm">Marcus Vance, Esq.</h4>
-                                <p class="text-xs text-slate">Environmental Law, CA Bar</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white p-8 rounded-lg shadow-sm border-l-4 border-gold">
-                        <p class="text-slate-dark italic mb-6">"Infrastructure failure is fundamentally a policy and statutory enforcement failure. This platform bridges that specific gap seamlessly for the public."</p>
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-navy text-gold flex items-center justify-center font-bold text-sm">DB</div>
-                            <div>
-                                <h4 class="font-bold text-sm">Dianne Burbank</h4>
-                                <p class="text-xs text-slate">Municipal Specialist, TX Bar</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+.env.example
+env
+For dev, SQLite is simplest
+ 
+DATABASE_URL="file:./dev.db"
 
+NextAuth
+ 
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="replace-with-a-strong-random-secret"
 
-        <!-- 2. AUTH & LAWYER VERIFICATION FLOW -->
-        <section id="login" class="view-section dynamic-view hidden bg-slate-light py-16 px-4">
-            <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
-                <div class="bg-navy p-6 text-white text-center">
-                    <h2 class="text-2xl font-bold font-serif text-gold">Lawyer Onboarding Portal</h2>
-                    <p class="text-sm text-gray-300 mt-1">Submit your credentials for secure credentialing and validation</p>
-                </div>
+prisma/schema.prisma
+prisma
+generator client {
+provider = "prisma-client-js"
+}
 
-                <!-- Wizard Tabs Indicator -->
-                <div class="flex border-b border-gray-200 text-xs font-semibold text-center text-gray-500">
-                    <div id="tab-step1" class="flex-1 py-3 bg-gray-50 border-b-2 border-gold text-navy">1. Account Creation</div>
-                    <div id="tab-step2" class="flex-1 py-3 bg-gray-50">2. Bar Credentials</div>
-                    <div id="tab-step3" class="flex-1 py-3 bg-gray-50">3. Status Verification</div>
-                </div>
+datasource db {
+provider = "sqlite"
+url      = env("DATABASE_URL")
+}
 
-                <!-- Form step 1 -->
-                <div id="panel-step1" class="p-8 space-y-6">
-                    <div class="space-y-3">
-                        <button type="button" class="w-full flex items-center justify-center gap-3 border border-gray-300 rounded px-4 py-2.5 text-sm font-medium hover:bg-gray-50 transition">
-                            <i class="fa-brands fa-google text-red-500"></i> Continue with Google Auth
-                        </button>
-                        <button type="button" class="w-full flex items-center justify-center gap-3 border border-gray-300 rounded px-4 py-2.5 text-sm font-medium hover:bg-gray-50 transition">
-                            <i class="fa-brands fa-linkedin text-blue-600"></i> Continue with LinkedIn Pro
-                        </button>
-                    </div>
-                    <div class="relative flex py-2 items-center">
-                        <div class="flex-grow border-t border-gray-200"></div>
-                        <span class="flex-shrink mx-4 text-gray-400 text-xs uppercase">Or Use Corporate Email</span>
-                        <div class="flex-grow border-t border-gray-200"></div>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-slate-dark mb-1">Professional Email</label>
-                        <input type="email" placeholder="attorney@firm.org" class="w-full p-2.5 border border-gray-300 rounded text-sm focus-ring">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-slate-dark mb-1">Password</label>
-                        <input type="password" placeholder="••••••••" class="w-full p-2.5 border border-gray-300 rounded text-sm focus-ring">
-                    </div>
-                    <button onclick="goToVerificationStep(2)" class="w-full bg-navy text-white font-bold py-3 rounded hover:bg-navy-light transition">
-                        Next: Verify Professional Credentials
-                    </button>
-                </div>
+model User {
+id                String   @id @default(cuid())
+name              String?
+email             String   @unique
+passwordHash     String
+isLawyerVerified  Boolean  @default(false)
+barId             String?
+barState          String?
+city              String?
+bio               String?
+createdAt         DateTime @default(now())
+updatedAt         DateTime @updatedAt
+posts             Post[]
+}
 
-                <!-- Form step 2 -->
-                <div id="panel-step2" class="p-8 space-y-6 hidden">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-dark mb-1">State Jurisdiction</label>
-                            <select class="w-full p-2.5 border border-gray-300 rounded text-sm focus-ring">
-                                <option>California (CalBar)</option>
-                                <option>New York (NYSBA)</option>
-                                <option>Texas (State Bar of Texas)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-dark mb-1">Bar Registration Number</label>
-                            <input type="text" placeholder="######" class="w-full p-2.5 border border-gray-300 rounded text-sm focus-ring">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-slate-dark mb-1">Proof of Good Standing (PDF/Image)</label>
-                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gold transition cursor-pointer">
-                            <i class="fa-solid fa-cloud-arrow-up text-3xl text-slate mb-2"></i>
-                            <p class="text-xs text-slate-dark font-medium">Drag-and-drop or click to upload current Bar Certificate</p>
-                            <p class="text-[10px] text-slate mt-1">Max file size: 10MB (PDF, PNG, JPG)</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <button onclick="goToVerificationStep(1)" class="w-1/3 bg-gray-200 text-slate-dark font-bold py-3 rounded hover:bg-gray-300 transition">Back</button>
-                        <button onclick="goToVerificationStep(3)" class="w-2/3 bg-gold text-navy font-bold py-3 rounded hover:bg-gold-light transition">Submit Verification Packet</button>
-                    </div>
-                </div>
+enum PostType {
+ARTICLE
+ISSUE
+}
 
-                <!-- Form step 3 -->
-                <div id="panel-step3" class="p-8 text-center space-y-6 hidden">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-100 text-amber-600 text-3xl mb-2 animate-pulse">
-                        <i class="fa-solid fa-clock-rotate-left"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-navy">Application Status: Pending Review</h3>
-                        <p class="text-sm text-slate mt-2 max-w-md mx-auto">
-                            Our compliance ecosystem is matching your data against state registries. Manual validation usually clears within 12–24 business hours.
-                        </p>
-                    </div>
-                    <div class="bg-slate-light p-4 rounded text-left border border-gray-200 max-w-md mx-auto">
-                        <div class="flex justify-between text-xs font-mono text-slate-dark">
-                            <span>Submission Reference:</span>
-                            <span class="font-bold">#LXC-99281-2026</span>
-                        </div>
-                        <div class="flex justify-between text-xs font-mono text-slate-dark mt-1">
-                            <span>Registry Sync Attempt:</span>
-                            <span class="text-green-600 font-bold">SUCCESS (Matched)</span>
-                        </div>
-                    </div>
-                    <div class="pt-4 flex gap-3 justify-center">
-                        <button onclick="switchView('publish')" class="bg-navy text-white text-sm px-6 py-2.5 rounded font-medium hover:bg-navy-light transition">Go to Publish Dashboard (Draft Mode)</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+model Post {
+id          String   @id @default(cuid())
+title       String
+content     String
+type        PostType
+city        String?
+tags        String[]
+authorId    String
+author      User     @relation(fields: [authorId], references: [id])
+createdAt   DateTime @default(now())
+updatedAt   DateTime @updatedAt
+status      String   @default("PUBLISHED") // For issues: OPEN, IN_PROGRESS, RESOLVED possible later
+}
 
+tailwind.config.js
+js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+content: ["./src/*/.{js,ts,jsx,tsx}"],
+theme: {
+extend: {
+colors: {
+navy: "#0E1A2B",
+gold: "#C9A86A",
+slate: "#6B7280"
+}
+}
+},
+plugins: []
+};
 
-        <!-- 3. PUBLISH CENTER (Rich Text Editor) -->
-        <section id="publish" class="view-section dynamic-view hidden max-w-5xl mx-auto px-4 py-12">
-            <div class="flex items-center justify-between border-b border-gray-200 pb-5 mb-8">
-                <div>
-                    <h1 class="text-3xl font-bold font-serif text-navy">LexCivic Workspace</h1>
-                    <p class="text-sm text-slate">Draft and catalog regulatory compliance audits, briefings, or regional updates</p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <button class="text-xs font-bold text-slate hover:text-navy border border-gray-300 bg-white px-3 py-2 rounded">Save Draft</button>
-                    <button onclick="alert('Post scheduled or published successfully.')" class="text-xs font-bold bg-gold text-navy hover:bg-gold-light px-4 py-2 rounded shadow-sm">Publish Content</button>
-                </div>
-            </div>
+postcss.config.js
+js
+module.exports = {
+plugins: {
+tailwindcss: {},
+autoprefixer: {}
+}
+};
 
-            <div class="grid lg:grid-cols-3 gap-8">
-                <!-- Editor Space -->
-                <div class="lg:col-span-2 space-y-6">
-                    <div>
-                        <input type="text" placeholder="Title: Clear, descriptive legal or structural issue headline..." class="w-full text-2xl font-serif font-bold border-b border-gray-200 pb-2 focus:outline-none focus:border-gold placeholder:text-gray-300">
-                    </div>
-                    
-                    <!-- Formatting Controls Bar -->
-                    <div class="bg-white border border-gray-200 p-2 rounded flex items-center gap-1 text-slate text-sm">
-                        <button class="w-8 h-8 rounded hover:bg-gray-100 flex items-center justify-center font-bold">B</button>
-                        <button class="w-8 h-8 rounded hover:bg-gray-100 flex items-center justify-center italic">I</button>
-                        <button class="w-8 h-8 rounded hover:bg-gray-100 flex items-center justify-center font-mono">“</button>
-                        <span class="text-gray-300 mx-1">|</span>
-                        <button class="w-8 h-8 rounded hover:bg-gray-100 flex items-center justify-center"><i class="fa-solid fa-link text-xs"></i></button>
-                        <button class="w-8 h-8 rounded hover:bg-gray-100 flex items-center justify-center"><i class="fa-solid fa-paperclip text-xs"></i></button>
-                        <button class="w-8 h-8 rounded hover:bg-gray-100 flex items-center justify-center"><i class="fa-solid fa-location-dot text-xs"></i></button>
-                        <span class="text-gray-300 mx-1">|</span>
-                        <span class="text-xs text-slate-dark ml-auto bg-gray-100 px-2 py-1 rounded font-mono">Statute Citation Format Enabled</span>
-                    </div>
+src/styles/globals.css
+css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-                    <!-- Sandbox Editor Area -->
-                    <div>
-                        <textarea rows="12" placeholder="Begin analysis here. Use legal citations format (e.g., 42 U.S.C. § 1983) for structural municipal issues..." class="w-full p-4 border border-gray-200 rounded-lg text-sm font-sans leading-relaxed focus-ring focus:border-transparent" style="resize: vertical;"></textarea>
-                    </div>
-                </div>
+html, body { height: 100%; }
+body { @apply bg-white text-slate; }
+a { @apply text-navy hover:underline; }
+.btn { @apply inline-flex items-center justify-center rounded-md px-4 py-2 font-medium transition-colors; }
+.btn-primary { @apply bg-navy text-white hover:bg-black; }
+.btn-secondary { @apply bg-gold text-navy hover:opacity-90; }
+.card { @apply rounded-lg border border-gray-200 p-4 shadow-sm bg-white; }
+.input { @apply w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gold; }
+.label { @apply text-sm font-medium text-navy; }
 
-                <!-- Content Configuration Meta-Panel -->
-                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-6 h-fit">
-                    <h3 class="font-serif font-bold text-navy border-b border-gray-100 pb-2">Classification & Meta</h3>
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-dark mb-1.5">Post Architecture Type</label>
-                        <div class="grid grid-cols-2 gap-2">
-                            <label class="border p-3 rounded text-center block cursor-pointer bg-gray-50 border-gold" id="type-prob-lbl">
-                                <input type="radio" name="post-type" class="sr-only" checked onclick="document.getElementById('meta-geo').classList.remove('hidden')">
-                                <i class="fa-solid fa-triangle-exclamation text-amber-600 block mb-1"></i>
-                                <span class="text-xs font-semibold">City Problem</span>
-                            </label>
-                            <label class="border p-3 rounded text-center block cursor-pointer bg-white" id="type-art-lbl">
-                                <input type="radio" name="post-type" class="sr-only" onclick="document.getElementById('meta-geo').classList.add('hidden')">
-                                <i class="fa-solid fa-book-bookmark text-blue-600 block mb-1"></i>
-                                <span class="text-xs font-semibold">Legal Insight</span>
-                            </label>
-                        </div>
-                    </div>
+src/lib/prisma.ts
+ts
+import { PrismaClient } from "@prisma/client";
 
-                    <div id="meta-geo" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-dark mb-1">Target Municipal Region</label>
-                            <input type="text" placeholder="e.g., Los Angeles, CA" class="w-full p-2 border border-gray-300 rounded text-xs focus-ring">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-dark mb-1">Systemic Domain Category</label>
-                            <select class="w-full p-2 border border-gray-300 rounded text-xs focus-ring">
-                                <option>Infrastructure & Public Safety</option>
-                                <option>Municipal Housing Discrepancies</option>
-                                <option>Environmental Regulatory Breaches</option>
-                                <option>Policing & Disciplinary Metrics</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+declare global {
+var prisma: PrismaClient | undefined;
+}
 
+export const prisma = global.prisma ?? new PrismaClient();
 
-        <!-- 4. CITY PROBLEM HUB -->
-        <section id="hub" class="view-section dynamic-view hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold font-serif text-navy">Municipal Docket & Issues Tracking</h1>
-                <p class="text-sm text-slate">Cross-referencing reported municipal vulnerabilities validated by legal counsels.</p>
-            </div>
+if (process.env.NODE_ENV !== "production") global.prisma = prisma;
 
-            <!-- Dashboard Filters & Controls -->
-            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-wrap gap-4 items-center justify-between mb-8">
-                <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-                    <div class="relative flex-grow sm:flex-grow-0">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-xs"></i>
-                        <input type="text" placeholder="Search by city, case number..." class="pl-9 pr-4 py-2 border border-gray-300 rounded text-xs w-full sm:w-64 focus-ring">
-                    </div>
-                    <select id="filter-category" onchange="filterIssues()" class="p-2 border border-gray-300 rounded text-xs bg-gray-50 focus-ring">
-                        <option value="all">All Domains</option>
-                        <option value="infrastructure">Infrastructure</option>
-                        <option value="housing">Housing Compliance</option>
-                        <option value="environmental">Environmental Violations</option>
-                    </select>
-                </div>
-                <div class="flex items-center gap-2 text-xs">
-                    <span class="text-slate font-medium">Export Repository:</span>
-                    <button class="border border-gray-300 hover:bg-gray-100 px-3 py-1.5 rounded bg-white text-slate-dark"><i class="fa-solid fa-file-pdf text-red-500 mr-1"></i> PDF</button>
-                    <button class="border border-gray-300 hover:bg-gray-100 px-3 py-1.5 rounded bg-white text-slate-dark"><i class="fa-solid fa-file-excel text-green-600 mr-1"></i> Data Sheet</button>
-                </div>
-            </div>
+src/pages/_app.tsx
+tsx
+import "@/styles/globals.css";
+import type { AppProps } from "next/app";
+import { SessionProvider } from "next-auth/react";
+import Layout from "@/components/Layout";
 
-            <div class="grid lg:grid-cols-3 gap-8">
-                <!-- Issues Stream Feed -->
-                <div class="lg:col-span-2 space-y-4" id="issues-container">
-                    <!-- Case item 1 -->
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition issue-card" data-cat="infrastructure">
-                        <div class="flex justify-between items-start gap-4 mb-3">
-                            <span class="bg-amber-100 text-amber-800 border border-amber-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wide">
-                                Open Status
-                            </span>
-                            <span class="text-xs font-mono text-slate font-semibold"><i class="fa-solid fa-location-dot text-gold mr-1"></i> Austin, TX</span>
-                        </div>
-                        <h3 class="text-lg font-bold font-serif text-navy hover:text-gold cursor-pointer transition">Systemic Bridge Structural Maintenance Variance</h3>
-                        <p class="text-xs text-slate mt-2 line-clamp-2">
-                            Detailed non-compliance metrics tracking structural deflection along the interstate service overpass. Local maintenance budgets have continuously misallocated state hazard mitigation outlays...
-                        </p>
-                        <div class="flex items-center justify-between border-t border-gray-100 pt-4 mt-4 text-xs">
-                            <div class="flex items-center gap-4 text-slate">
-                                <button onclick="toggleUpvote(this)" class="hover:text-navy transition flex items-center gap-1.5 font-semibold bg-gray-100 px-3 py-1 rounded">
-                                    <i class="fa-solid fa-arrow-up"></i> <span class="vote-count">142</span>
-                                </button>
-                                <span><i class="fa-solid fa-user-shield text-gold mr-1"></i> Verified Briefing</span>
-                            </div>
-                            <span class="text-slate font-medium">Domain: Infrastructure</span>
-                        </div>
-                    </div>
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+return (
+<SessionProvider session={session}>
+<Layout>
+<Component {...pageProps} />
+</Layout>
+</SessionProvider>
+);
+}
 
-                    <!-- Case item 2 -->
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition issue-card" data-cat="housing">
-                        <div class="flex justify-between items-start gap-4 mb-3">
-                            <span class="bg-blue-100 text-blue-800 border border-blue-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wide">
-                                In Progress
-                            </span>
-                            <span class="text-xs font-mono text-slate font-semibold"><i class="fa-solid fa-location-dot text-gold mr-1"></i> Los Angeles, CA</span>
-                        </div>
-                        <h3 class="text-lg font-bold font-serif text-navy hover:text-gold cursor-pointer transition">Unlawful Eviction Notice Enforcement Processing Gaps</h3>
-                        <p class="text-xs text-slate mt-2 line-clamp-2">
-                            Analysis of systemic errors within municipal housing court notices processed through fast-track administrative pipelines without proper oversight or validation...
-                        </p>
-                        <div class="flex items-center justify-between border-t border-gray-100 pt-4 mt-4 text-xs">
-                            <div class="flex items-center gap-4 text-slate">
-                                <button onclick="toggleUpvote(this)" class="hover:text-navy transition flex items-center gap-1.5 font-semibold bg-gray-100 px-3 py-1 rounded">
-                                    <i class="fa-solid fa-arrow-up"></i> <span class="vote-count">389</span>
-                                </button>
-                                <span><i class="fa-solid fa-user-shield text-gold mr-1"></i> Verified Briefing</span>
-                            </div>
-                            <span class="text-slate font-medium">Domain: Housing Compliance</span>
-                        </div>
-                    </div>
+src/components/Layout.tsx
+tsx
+import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
+import React from "react";
 
-                    <!-- Case item 3 -->
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition issue-card" data-cat="environmental">
-                        <div class="flex justify-between items-start gap-4 mb-3">
-                            <span class="bg-green-100 text-green-800 border border-green-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wide">
-                                Resolved
-                            </span>
-                            <span class="text-xs font-mono text-slate font-semibold"><i class="fa-solid fa-location-dot text-gold mr-1"></i> Flint, MI</span>
-                        </div>
-                        <h3 class="text-lg font-bold font-serif text-navy hover:text-gold cursor-pointer transition">Industrial Effluent Discharge Into Public Stream Feeders</h3>
-                        <p class="text-xs text-slate mt-2 line-clamp-2">
-                            Independent sampling confirmed chemical values spikes above standard limits. Consent decree tracking parameters established...
-                        </p>
-                        <div class="flex items-center justify-between border-t border-gray-100 pt-4 mt-4 text-xs">
-                            <div class="flex items-center gap-4 text-slate">
-                                <button onclick="toggleUpvote(this)" class="hover:text-navy transition flex items-center gap-1.5 font-semibold bg-gray-100 px-3 py-1 rounded">
-                                    <i class="fa-solid fa-arrow-up"></i> <span class="vote-count">711</span>
-                                </button>
-                                <span><i class="fa-solid fa-user-shield text-gold mr-1"></i> Verified Briefing</span>
-                            </div>
-                            <span class="text-slate font-medium">Domain: Environmental Violations</span>
-                        </div>
-                    </div>
-                </div>
+export default function Layout({ children }: { children: React.ReactNode }) {
+const { data: session } = useSession();
 
-                <!-- Simulation Map Interface -->
-                <div class="bg-navy rounded-xl border-2 border-gold shadow-md h-[550px] relative overflow-hidden flex flex-col">
-                    <div class="p-4 bg-navy-dark text-white border-b border-gold/20 flex justify-between items-center">
-                        <span class="text-xs font-bold tracking-wider uppercase text-gold"><i class="fa-solid fa-map-location-dot mr-1.5"></i> Regional Geofencing Matrix</span>
-                        <span class="bg-red-500/20 text-red-400 border border-red-500/40 text-[10px] px-2 py-0.5 rounded font-mono">Live Sync</span>
-                    </div>
-                    <!-- Mock map elements -->
-                    <div class="flex-grow bg-slate-dark relative" style="background-image: radial-gradient(rgba(255,255,255,0.15) 1px, transparent 0); background-size: 24px 24px;">
-                        <!-- Map Pin 1 -->
-                        <div class="absolute top-1/4 left-1/3 group cursor-pointer">
-                            <div class="w-3 h-3 bg-amber-500 rounded-full animate-ping absolute inline-flex"></div>
-                            <i class="fa-solid fa-location-pin text-xl text-amber-500 relative z-10"></i>
-                            <div class="hidden group-hover:block absolute bg-navy border border-gold text-white text-[10px] p-2 rounded shadow-xl w-32 -top-12 left-4 z-50">
-                                <strong>Austin, TX</strong><br>Bridge Infrastructure Gap
-                            </div>
-                        </div>
-                        <!-- Map Pin 2 -->
-                        <div class="absolute top-2/3 left-1/4 group cursor-pointer">
-                            <div class="w-3 h-3 bg-blue-500 rounded-full animate-ping absolute inline-flex"></div>
-                            <i class="fa-solid fa-location-pin text-xl text-blue-500 relative z-10"></i>
-                            <div class="hidden group-hover:block absolute bg-navy border border-gold text-white text-[10px] p-2 rounded shadow-xl w-32 -top-12 left-4 z-50">
-                                <strong>Los Angeles, CA</strong><br>Housing Notice Audit
-                            </div>
-                        </div>
-                        <!-- Map Pin 3 -->
-                        <div class="absolute top-1/2 right-1/4 group cursor-pointer">
-                            <i class="fa-solid fa-location-pin text-xl text-green-500 relative z-10"></i>
-                            <div class="hidden group-hover:block absolute bg-navy border border-gold text-white text-[10px] p-2 rounded shadow-xl w-32 -top-12 left-4 z-50">
-                                <strong>Flint, MI</strong><br>Water Discharge Issue
-                            </div>
-                        </div>
+return (
+<div className="min-h-screen flex flex-col">
+<header className="border-b bg-white">
+<div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+<Link href="/" className="text-xl font-semibold text-navy">CivicLaw Voices</Link>
+<nav className="flex gap-4 items-center">
+<Link href="/articles" className="hover:underline">Articles</Link>
+<Link href="/issues" className="hover:underline">City Issues</Link>
+{session?.user ? (
+<>
+<Link href="/publish" className="btn btn-secondary">Publish</Link>
+<Link href={/profile/${(session.user as any).id}} className="hover:underline">Profile</Link>
+<button className="btn btn-primary" onClick={() => signOut()}>Sign out</button>
+</>
+) : (
+<>
+<Link href="/signup" className="btn btn-secondary">Join as Lawyer</Link>
+<button className="btn btn-primary" onClick={() => signIn()}>Sign in</button>
+</>
+)}
+</nav>
+</div>
+</header>
+<main className="flex-1">
+<div className="mx-auto max-w-6xl px-4 py-8">{children}</div>
+</main>
+<footer className="border-t">
+<div className="mx-auto max-w-6xl px-4 py-6 text-sm text-gray-500">
+© {new Date().getFullYear()} CivicLaw Voices • Built for verified lawyers and communities
+</div>
+</footer>
+</div>
+);
+}
 
-                        <!-- Map Hud overlay -->
-                        <div class="absolute bottom-4 left-4 right-4 bg-navy-dark/95 border border-gold/30 rounded p-3 text-white backdrop-blur-sm">
-                            <p class="text-[11px] font-mono leading-normal text-gray-300">
-                                <span class="text-gold font-bold">Instruction:</span> Hover or tap clustered localized coordinates nodes to preview active filings briefs.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+src/pages/index.tsx
+tsx
+import Link from "next/link";
 
+export default function Home() {
+return (
+<div className="grid gap-10">
+<section className="text-center py-16 bg-[linear-gradient(135deg,#0E1A2B,transparent)] rounded-xl text-white">
+<h1 className="text-4xl md:text-5xl font-bold">Amplify Your Legal Voice</h1>
+<p className="mt-4 text-lg opacity-90">Verified lawyers publish city issues and legal insights to inform and advocate.</p>
+<div className="mt-8 flex justify-center gap-4">
+<Link href="/signup" className="btn btn-secondary">Join as a Lawyer</Link>
+<Link href="/articles" className="btn btn-primary bg-white text-navy hover:bg-gray-100">Explore Articles</Link>
+</div>
+</section>
 
-        <!-- 5. ARTICLES LIBRARY -->
-        <section id="library" class="view-section dynamic-view hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="border-b border-gray-200 pb-6 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                    <h1 class="text-3xl font-bold font-serif text-navy">Legal Insights Library</h1>
-                    <p class="text-sm text-slate">Authoritative statutory analyses and accountability publications by legal experts</p>
-                </div>
-                <div class="flex gap-2">
-                    <button class="bg-navy text-white text-xs font-semibold px-4 py-2 rounded">Latest Releases</button>
-                    <button class="bg-white border text-slate text-xs font-semibold px-4 py-2 rounded hover:bg-gray-50">Most Consulted</button>
-                </div>
-            </div>
+<section className="grid md:grid-cols-2 gap-6">
+<div className="card">
+<h3 className="text-xl font-semibold text-navy">City Problem Hub</h3>
+<p className="mt-2 text-gray-600">Report and track civic issues by location with legal context and solutions.</p>
+<Link href="/issues" className="mt-4 inline-block text-navy underline">Browse City Issues →</Link>
+</div>
+<div className="card">
+<h3 className="text-xl font-semibold text-navy">Articles Library</h3>
+<p className="mt-2 text-gray-600">Read vetted legal insights by verified attorneys across jurisdictions.</p>
+<Link href="/articles" className="mt-4 inline-block text-navy underline">Explore Articles →</Link>
+</div>
+</section>
+</div>
+);
+}
 
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Brief Card 1 -->
-                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
-                    <div class="p-6 flex-grow">
-                        <div class="flex items-center gap-2 text-xs font-mono text-slate mb-3">
-                            <span class="text-gold font-bold">Constitutional Law</span>
-                            <span>•</span>
-                            <span>9 min read</span>
-                        </div>
-                        <h3 class="text-xl font-serif font-bold text-navy mb-3 hover:text-gold cursor-pointer transition">The Scope of Sovereign Immunity in Municipal Infrastructure Torts</h3>
-                        <p class="text-xs text-slate line-clamp-3 mb-4">
-                            An analytical brief covering structural changes in municipal tort law liability protections when cities neglect critical infrastructure systems after receiving targeted remediation funding allocations.
-                        </p>
-                        <div class="bg-slate-light p-3 rounded font-mono text-[10px] text-slate-dark border-l-2 border-gold">
-                            Primary Ref: 28 U.S.C. § 2674; Monroe v. Pape, 365 U.S. 167
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 px-6 py-4 border-t border-gray-100 flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="w-7 h-7 rounded-full bg-navy text-white flex items-center justify-center font-bold text-[10px]">TH</div>
-                            <span class="text-xs font-medium text-slate-dark">T. Hardinge, Esq.</span>
-                        </div>
-                        <button class="text-gold hover:text-gold-dark text-xs font-bold flex items-center gap-1">Read Brief <i class="fa-solid fa-chevron-right text-[10px]"></i></button>
-                    </div>
-                </div>
+src/pages/signup.tsx
+tsx
+import { FormEvent, useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
-                <!-- Brief Card 2 -->
-                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
-                    <div class="p-6 flex-grow">
-                        <div class="flex items-center gap-2 text-xs font-mono text-slate mb-3">
-                            <span class="text-gold font-bold">Land Use & Housing</span>
-                            <span>•</span>
-                            <span>14 min read</span>
-                        </div>
-                        <h3 class="text-xl font-serif font-bold text-navy mb-3 hover:text-gold cursor-pointer transition">Procedural Due Process Challenges in Accelerated Code Enforcement Actions</h3>
-                        <p class="text-xs text-slate line-clamp-3 mb-4">
-                            Exploring historical precedents where automated municipal fine systems violated constitutional standards regarding notice requirements and opportunity to respond.
-                        </p>
-                        <div class="bg-slate-light p-3 rounded font-mono text-[10px] text-slate-dark border-l-2 border-gold">
-                            Primary Ref: Matthews v. Eldridge, 424 U.S. 319
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 px-6 py-4 border-t border-gray-100 flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="w-7 h-7 rounded-full bg-navy text-white flex items-center justify-center font-bold text-[10px]">EV</div>
-                            <span class="text-xs font-medium text-slate-dark">Hon. E. Vance</span>
-                        </div>
-                        <button class="text-gold hover:text-gold-dark text-xs font-bold flex items-center gap-1">Read Brief <i class="fa-solid fa-chevron-right text-[10px]"></i></button>
-                    </div>
-                </div>
+export default function SignUp() {
+const [form, setForm] = useState({ name: "", email: "", password: "" });
+const [loading, setLoading] = useState(false);
+const router = useRouter();
 
-                <!-- Brief Card 3 -->
-                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
-                    <div class="p-6 flex-grow">
-                        <div class="flex items-center gap-2 text-xs font-mono text-slate mb-3">
-                            <span class="text-gold font-bold">Administrative Law</span>
-                            <span>•</span>
-                            <span>11 min read</span>
-                        </div>
-                        <h3 class="text-xl font-serif font-bold text-navy mb-3 hover:text-gold cursor-pointer transition">Ecosystem Standing: Navigating Local Clean Water Compliance</h3>
-                        <p class="text-xs text-slate line-clamp-3 mb-4">
-                            A clear technical review of modern statutory guidelines determining citizen standing when bringing injunctive claims against heavy industrial pollutant streams.
-                        </p>
-                        <div class="bg-slate-light p-3 rounded font-mono text-[10px] text-slate-dark border-l-2 border-gold">
-                            Primary Ref: 33 U.S.C. § 1365 (Clean Water Act)
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 px-6 py-4 border-t border-gray-100 flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="w-7 h-7 rounded-full bg-navy text-white flex items-center justify-center font-bold text-[10px]">MV</div>
-                            <span class="text-xs font-medium text-slate-dark">M. Vance, Esq.</span>
-                        </div>
-                        <button class="text-gold hover:text-gold-dark text-xs font-bold flex items-center gap-1">Read Brief <i class="fa-solid fa-chevron-right text-[10px]"></i></button>
-                    </div>
-                </div>
-            </div>
-        </section>
+async function onSubmit(e: FormEvent) {
+e.preventDefault();
+setLoading(true);
+const res = await fetch("/api/signup", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify(form)
+});
+setLoading(false);
+if (res.ok) {
+await signIn("credentials", { email: form.email, password: form.password, callbackUrl: "/verify" });
+} else {
+alert("Sign up failed");
+}
+}
 
+return (
+<div className="max-w-md mx-auto card">
+<h1 className="text-2xl font-semibold text-navy">Create your account</h1>
+<p className="text-sm text-gray-500 mt-1">Accounts must be verified to publish.</p>
+<form className="mt-6 grid gap-4" onSubmit={onSubmit}>
+<label className="grid gap-1">
+<span className="label">Full name</span>
+<input className="input" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required />
+</label>
+<label className="grid gap-1">
+<span className="label">Email</span>
+<input type="email" className="input" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required />
+</label>
+<label className="grid gap-1">
+<span className="label">Password</span>
+<input type="password" className="input" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} required />
+</label>
+<button className="btn btn-primary" disabled={loading}>{loading ? "Creating..." : "Sign up"}</button>
+</form>
+</div>
+);
+}
 
-        <!-- 6. ADMIN DASHBOARD -->
-        <section id="admin" class="view-section dynamic-view hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            <div class="flex items-center justify-between border-b border-gray-200 pb-5 mb-8">
-                <div>
-                    <h1 class="text-3xl font-bold font-serif text-navy">Central Back-Office Dashboard</h1>
-                    <p class="text-sm text-slate">Platform compliance monitoring, verification pipelines, and review queues</p>
-                </div>
-                <span class="bg-gold/10 text-gold border border-gold/40 text-xs px-3 py-1 rounded-full font-mono font-bold">System Administrator Role</span>
-            </div>
+src/pages/verify.tsx
+tsx
+import { useState, FormEvent } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
-            <!-- Operational Metrics Grid -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                    <span class="text-xs text-slate font-bold uppercase block tracking-wider">Pending Bar Verifications</span>
-                    <span class="text-3xl font-bold font-serif text-navy block mt-2">14</span>
-                </div>
-                <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                    <span class="text-xs text-slate font-bold uppercase block tracking-wider">Flagged Content Reviews</span>
-                    <span class="text-3xl font-bold font-serif text-amber-600 block mt-2">3</span>
-                </div>
-                <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                    <span class="text-xs text-slate font-bold uppercase block tracking-wider">Active Verified Counsel</span>
-                    <span class="text-3xl font-bold font-serif text-navy block mt-2">1,248</span>
-                </div>
-                <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                    <span class="text-xs text-slate font-bold uppercase block tracking-wider">PDF Reports Compiled</span>
-                    <span class="text-3xl font-bold font-serif text-green-700 block mt-2">4,812</span>
-                </div>
-            </div>
+export default function Verify() {
+const { data: session } = useSession();
+const [form, setForm] = useState({ barId: "", barState: "", city: "", bio: "" });
+const [loading, setLoading] = useState(false);
+const router = useRouter();
 
-            <!-- Action Work Queues -->
-            <div class="grid lg:grid-cols-3 gap-8">
-                <!-- Verification Processing List -->
-                <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                    <div class="p-4 bg-navy text-white font-serif font-semibold text-sm flex justify-between items-center">
-                        <span>Identity & License Review Queue</span>
-                        <span class="text-xs font-mono text-gold bg-gold/10 px-2 py-0.5 rounded">Action Required</span>
-                    </div>
-                    <div class="divide-y divide-gray-100">
-                        <div class="p-4 flex items-center justify-between text-xs hover:bg-gray-50 transition">
-                            <div>
-                                <h4 class="font-bold text-navy text-sm">Sarah Jenkins, Esq.</h4>
-                                <p class="text-slate font-mono mt-0.5">Bar Reference: #IL-8829182 • State Bar of Illinois</p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button onclick="alert('Credential token match verified manually.')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded transition">Approve</button>
-                                <button onclick="alert('Deficiency notification dispatched.')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded transition">Reject</button>
-                            </div>
-                        </div>
-                        <div class="p-4 flex items-center justify-between text-xs hover:bg-gray-50 transition">
-                            <div>
-                                <h4 class="font-bold text-navy text-sm">David Vance, Jr.</h4>
-                                <p class="text-slate font-mono mt-0.5">Bar Reference: #TX-9910294 • State Bar of Texas</p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button onclick="alert('Credential token match verified manually.')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded transition">Approve</button>
-                                <button onclick="alert('Deficiency notification dispatched.')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded transition">Reject</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+async function onSubmit(e: FormEvent) {
+e.preventDefault();
+setLoading(true);
+const res = await fetch("/api/verifyLawyer", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify(form)
+});
+setLoading(false);
+if (res.ok) {
+alert("Verification submitted. In this demo, valid patterns auto-verify.");
+router.push("/publish");
+} else {
+const msg = await res.text();
+alert(msg || "Verification failed");
+}
+}
 
-                <!-- Platform Activity Stream Log -->
-                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                    <div class="p-4 bg-gray-50 border-b border-gray-200 font-serif font-bold text-navy text-sm">
-                        System Transparency Registry
-                    </div>
-                    <div class="p-4 font-mono text-[11px] space-y-3 text-slate-dark max-h-[300px] overflow-y-auto">
-                        <div class="pb-2 border-b border-gray-100">
-                            <span class="text-green-600 font-bold">[SYNC]</span> Automated database validation checked 41 California Bar profiles. All records matching.
-                        </div>
-                        <div class="pb-2 border-b border-gray-100">
-                            <span class="text-amber-600 font-bold">[WARN]</span> Article ID #401 flagged for citation confirmation formatting gaps. Posted to editor review backlog.
-                        </div>
-                        <div>
-                            <span class="text-blue-600 font-bold">[INFO]</span> PDF docket summary package compiled for municipal audit matching regional tag #TX-AUSTIN.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+return (
+<div className="max-w-lg mx-auto card">
+<h1 className="text-2xl font-semibold text-navy">Lawyer Verification</h1>
+<p className="text-sm text-gray-500 mt-1">Provide your bar credentials. Demo auto-approves if Bar ID starts with LAW- and 5 digits (e.g., LAW-12345).</p>
+{session ? (
+<form className="mt-6 grid gap-4" onSubmit={onSubmit}>
+<label className="grid gap-1">
+<span className="label">Bar ID</span>
+<input className="input" value={form.barId} onChange={e => setForm({ ...form, barId: e.target.value })} required />
+</label>
+<label className="grid gap-1">
+<span className="label">Bar State</span>
+<input className="input" value={form.barState} onChange={e => setForm({ ...form, barState: e.target.value })} required />
+</label>
+<label className="grid gap-1">
+<span className="label">City</span>
+<input className="input" value={form.city} onChange={e => setForm({ ...form, city: e.target.value })} />
+</label>
+<label className="grid gap-1">
+<span className="label">Short Bio</span>
+<textarea className="input" rows={4} value={form.bio} onChange={e => setForm({ ...form, bio: e.target.value })} />
+</label>
+<button className="btn btn-primary" disabled={loading}>{loading ? "Submitting..." : "Submit for Verification"}</button>
+</form>
+) : (
+<p>Please sign in to verify.</p>
+)}
+</div>
+);
+}
 
-    </main>
+src/pages/publish.tsx
+tsx
+import { GetServerSideProps } from "next";
+import { getSession, useSession } from "next-auth/react";
+import { useState, FormEvent } from "react";
+import { prisma } from "@/lib/prisma";
 
-    <!-- FOOTER -->
-    <footer class="bg-navy text-white border-t-4 border-gold pt-12 pb-6 px-4">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8 border-b border-white/10 pb-8 mb-6 text-sm">
-            <div class="space-y-3">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-scale-balanced text-xl text-gold"></i>
-                    <span class="text-xl font-bold font-serif text-white tracking-wide">LexCivic</span>
-                </div>
-                <p class="text-xs text-gray-400 font-light leading-relaxed">
-                    Bridging structural municipal data analysis and constitutional accountability through rigorous legal review.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-serif font-bold text-gold mb-3 text-xs uppercase tracking-wider">Framework Features</h4>
-                <ul class="space-y-1.5 text-xs text-gray-300">
-                    <li><button onclick="switchView('hub')" class="hover:text-gold transition">City Issues Map</button></li>
-                    <li><button onclick="switchView('library')" class="hover:text-gold transition">Analyses Library</button></li>
-                    <li><button onclick="switchView('login')" class="hover:text-gold transition">Attorney Verification Portal</button></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-serif font-bold text-gold mb-3 text-xs uppercase tracking-wider">Governance</h4>
-                <ul class="space-y-1.5 text-xs text-gray-300">
-                    <li class="hover:text-gold cursor-pointer transition">Editorial Guidelines</li>
-                    <li class="hover:text-gold cursor-pointer transition">Transparency Index Logs</li>
-                    <li class="hover:text-gold cursor-pointer transition">Regulatory Disclaimers</li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-serif font-bold text-gold mb-3 text-xs uppercase tracking-wider">System Disclaimer</h4>
-                <p class="text-[11px] text-gray-400 font-light leading-normal">
-                    LexCivic functions exclusively as an informative public policy analytics mechanism. Submissions do not construct an active attorney-client operational privilege.
-                </p>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 font-mono">
-            <p>&copy; 2026 LexCivic System Frameworks. All rights reserved.</p>
-            <div class="flex gap-4 mt-2 sm:mt-0">
-                <span class="hover:text-gold cursor-pointer">Privacy Protocol</span>
-                <span>•</span>
-                <span class="hover:text-gold cursor-pointer">Terms of Service</span>
-            </div>
-        </div>
-    </footer>
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+const session = await getSession(ctx);
+if (!session) return { redirect: { destination: "/api/auth/signin", permanent: false } };
+const user = await prisma.user.findUnique({ where: { email: session.user?.email || "" } });
+if (!user?.isLawyerVerified) {
+return { redirect: { destination: "/verify", permanent: false } };
+}
+return { props: {} };
+};
 
-    <!-- INTERACTIVE VIEW CONTROL SCRIPT -->
-    <script>
-        function switchView(viewId) {
-            // Hide all views
-            const views = document.querySelectorAll('.dynamic-view');
-            views.forEach(view => view.classList.add('hidden'));
-            
-            // Show requested view
-            const target = document.getElementById(viewId);
-            if(target) {
-                target.classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+export default function Publish() {
+const { data: session } = useSession();
+const [form, setForm] = useState({ title: "", content: "", type: "ARTICLE", city: "", tags: "" });
+const [loading, setLoading] = useState(false);
 
-            // Close mobile menu if open
-            document.getElementById('mobile-menu').classList.add('hidden');
-        }
+async function onSubmit(e: FormEvent) {
+e.preventDefault();
+setLoading(true);
+const res = await fetch("/api/posts", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({ ...form, tags: form.tags.split(",").map(t => t.trim()).filter(Boolean) })
+});
+setLoading(false);
+if (res.ok) {
+alert("Published!");
+setForm({ title: "", content: "", type: "ARTICLE", city: "", tags: "" });
+} else {
+alert("Failed to publish");
+}
+}
 
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
+return (
+<div className="max-w-2xl mx-auto card">
+<h1 className="text-2xl font-semibold text-navy">Publish</h1>
+<form className="mt-6 grid gap-4" onSubmit={onSubmit}>
+<label className="grid gap-1">
+<span className="label">Post Type</span>
+<select className="input" value={form.type} onChange={e => setForm({ ...form, type: e.target.value })}>
+<option value="ARTICLE">Article</option>
+<option value="ISSUE">City Issue</option>
+</select>
+</label>
+<label className="grid gap-1">
+<span className="label">Title</span>
+<input className="input" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required />
+</label>
+{form.type === "ISSUE" && (
+<label className="grid gap-1">
+<span className="label">City</span>
+<input className="input" value={form.city} onChange={e => setForm({ ...form, city: e.target.value })} required />
+</label>
+)}
+<label className="grid gap-1">
+<span className="label">Tags (comma separated)</span>
+<input className="input" value={form.tags} onChange={e => setForm({ ...form, tags: e.target.value })} />
+</label>
+<label className="grid gap-1">
+<span className="label">Content</span>
+<textarea className="input" rows={10} value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} required />
+</label>
+<button className="btn btn-primary" disabled={loading}>{loading ? "Publishing..." : "Publish"}</button>
+</form>
+</div>
+);
+}
 
-        function goToVerificationStep(step) {
-            // Hide panels
-            document.getElementById('panel-step1').classList.add('hidden');
-            document.getElementById('panel-step2').classList.add('hidden');
-            document.getElementById('panel-step3').classList.add('hidden');
+src/pages/articles/index.tsx
+tsx
+import { prisma } from "@/lib/prisma";
+import { GetServerSideProps } from "next";
+import Link from "next/link";
 
-            // Reset tab styles
-            document.getElementById('tab-step1').className = "flex-1 py-3 bg-gray-50";
-            document.getElementById('tab-step2').className = "flex-1 py-3 bg-gray-50";
-            document.getElementById('tab-step3').className = "flex-1 py-3 bg-gray-50";
+export const getServerSideProps: GetServerSideProps = async () => {
+const posts = await prisma.post.findMany({
+where: { type: "ARTICLE" },
+orderBy: { createdAt: "desc" },
+include: { author: true }
+});
+return { props: { posts: JSON.parse(JSON.stringify(posts)) } };
+};
 
-            // Activate specific targets
-            document.getElementById('panel-step' + step).classList.remove('hidden');
-            
-            const activeTab = document.getElementById('tab-step' + step);
-            activeTab.classList.add('border-b-2', 'border-gold', 'text-navy', 'font-bold');
-        }
+export default function Articles({ posts }: any) {
+return (
+<div className="grid gap-6">
+<h1 className="text-3xl font-semibold text-navy">Articles</h1>
+<div className="grid md:grid-cols-2 gap-6">
+{posts.map((p: any) => (
+<article key={p.id} className="card">
+<h3 className="text-xl font-semibold">{p.title}</h3>
+<p className="text-sm text-gray-500 mt-1">By {p.author?.name || "Unknown"} · {new Date(p.createdAt).toLocaleDateString()}</p>
+<p className="mt-3 line-clamp-3 text-gray-700">{p.content}</p>
+</article>
+))}
+</div>
+</div>
+);
+}
 
-        function filterIssues() {
-            const selectedValue = document.getElementById('filter-category').value;
-            const cards = document.querySelectorAll('.issue-card');
+src/pages/issues/index.tsx
+tsx
+import { prisma } from "@/lib/prisma";
+import { GetServerSideProps } from "next";
 
-            cards.forEach(card => {
-                if (selectedValue === 'all' || card.getAttribute('data-cat') === selectedValue) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
-            });
-        }
+export const getServerSideProps: GetServerSideProps = async () => {
+const posts = await prisma.post.findMany({
+where: { type: "ISSUE" },
+orderBy: { createdAt: "desc" },
+include: { author: true }
+});
+return { props: { posts: JSON.parse(JSON.stringify(posts)) } };
+};
 
-        function toggleUpvote(button) {
-            const countSpan = button.querySelector('.vote-count');
-            let votes = parseInt(countSpan.textContent);
-            
-            if(button.classList.contains('text-navy')) {
-                button.classList.remove('text-navy', 'bg-gold/30');
-                votes--;
-            } else {
-                button.classList.add('text-navy', 'bg-gold/30');
-                votes++;
-            }
-            countSpan.textContent = votes;
-        }
-    </script>
-</body>
-</html>
+export default function Issues({ posts }: any) {
+return (
+<div className="grid gap-6">
+<h1 className="text-3xl font-semibold text-navy">City Issues</h1>
+<div className="grid gap-6">
+{posts.map((p: any) => (
+<article key={p.id} className="card">
+<div className="flex items-center justify-between">
+<h3 className="text-xl font-semibold">{p.title}</h3>
+<span className="text-xs bg-gray-100 px-2 py-1 rounded">{p.city || "N/A"}</span>
+</div>
+<p className="text-sm text-gray-500 mt-1">By {p.author?.name || "Unknown"} · {new Date(p.createdAt).toLocaleDateString()}</p>
+<p className="mt-3 text-gray-700">{p.content}</p>
+</article>
+))}
+</div>
+</div>
+);
+}
 
+src/pages/profile/[id].tsx
+tsx
+import { GetServerSideProps } from "next";
+import { prisma } from "@/lib/prisma";
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+const id = params?.id as string;
+const user = await prisma.user.findUnique({
+where: { id },
+include: { posts: { orderBy: { createdAt: "desc" } } }
+});
+if (!user) return { notFound: true };
+return { props: { user: JSON.parse(JSON.stringify(user)) } };
+};
+
+export default function Profile({ user }: any) {
+return (
+<div className="grid gap-6">
+<div className="card">
+<div className="flex items-center justify-between">
+<h1 className="text-3xl font-semibold text-navy">{user.name || "Lawyer"}</h1>
+<span className={text-xs px-2 py-1 rounded ${user.isLawyerVerified ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}}>
+{user.isLawyerVerified ? "Verified Lawyer" : "Verification Pending"}
+</span>
+</div>
+<p className="text-sm text-gray-600 mt-1">{user.city || ""}</p>
+<p className="mt-3 text-gray-700">{user.bio || "No bio provided."}</p>
+{user.barId && <p className="text-xs text-gray-500 mt-2">Bar ID: {user.barId} • {user.barState}</p>}
+</div>
+
+<section className="grid gap-4">
+<h2 className="text-xl font-semibold text-navy">Posts</h2>
+<div className="grid md:grid-cols-2 gap-6">
+{user.posts.map((p: any) => (
+<article key={p.id} className="card">
+<div className="flex items-center justify-between">
+<h3 className="text-lg font-semibold">{p.title}</h3>
+<span className="text-xs bg-gray-100 px-2 py-1 rounded">{p.type}</span>
+</div>
+<p className="text-sm text-gray-500 mt-1">{new Date(p.createdAt).toLocaleDateString()}</p>
+<p className="mt-2 line-clamp-3 text-gray-700">{p.content}</p>
+</article>
+))}
+</div>
+</section>
+</div>
+);
+}
+
+src/pages/api/auth/[...nextauth].ts
+ts
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import { prisma } from "@/lib/prisma";
+import bcrypt from "bcryptjs";
+
+export default NextAuth({
+providers: [
+Credentials({
+name: "Credentials",
+credentials: {
+email: { label: "Email", type: "email" },
+password: { label: "Password", type: "password" }
+},
+async authorize(credentials) {
+if (!credentials?.email || !credentials?.password) return null;
+const user = await prisma.user.findUnique({ where: { email: credentials.email } });
+if (!user) return null;
+const valid = await bcrypt.compare(credentials.password, user.passwordHash);
+if (!valid) return null;
+return { id: user.id, email: user.email, name: user.name };
+}
+})
+],
+session: { strategy: "jwt" },
+pages: { signIn: "/api/auth/signin" },
+callbacks: {
+async jwt({ token, user }) {
+if (user) token.id = (user as any).id;
+return token;
+},
+async session({ session, token }) {
+if (session.user && token) (session.user as any).id = token.id as string;
+return session;
+}
+},
+secret: process.env.NEXTAUTH_SECRET
+});
+
+src/pages/api/signup.ts
+ts
+import type { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from "@/lib/prisma";
+import bcrypt from "bcryptjs";
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+if (req.method !== "POST") return res.status(405).end();
+const { name, email, password } = req.body || {};
+if (!email || !password) return res.status(400).send("Missing fields");
+const exists = await prisma.user.findUnique({ where: { email } });
+if (exists) return res.status(400).send("Email already in use");
+const passwordHash = await bcrypt.hash(password, 10);
+await prisma.user.create({ data: { name: name || "", email, passwordHash } });
+res.status(200).end();
+}
+
+src/pages/api/verifyLawyer.ts
+ts
+import type { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth/next";
+import authOptions from "./auth/[...nextauth]";
+import { prisma } from "@/lib/prisma";
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+if (req.method !== "POST") return res.status(405).end();
+const session = await getServerSession(req, res, (authOptions as any).authOptions || (authOptions as any));
+if (!session?.user?.email) return res.status(401).send("Unauthorized");
+
+const { barId, barState, city, bio } = req.body || {};
+if (!barId || !barState) return res.status(400).send("Missing bar info");
+
+// Demo auto-verify rule: Bar ID like "LAW-12345"
+const auto = /^LAW-\d{5}$/.test(barId);
+const user = await prisma.user.update({
+where: { email: session.user.email },
+data: {
+barId,
+barState,
+city: city || null,
+bio: bio || null,
+isLawyerVerified: auto
+}
+});
+
+return res.status(200).json({ verified: user.isLawyerVerified });
+}
+
+src/pages/api/posts.ts
+ts
+import type { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth/next";
+import authOptions from "./auth/[...nextauth]";
+import { prisma } from "@/lib/prisma";
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+const session = await getServerSession(req, res, (authOptions as any).authOptions || (authOptions as any));
+if (!session?.user?.email) return res.status(401).send("Unauthorized");
+
+const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+if (!user) return res.status(401).send("Unauthorized");
+
+if (req.method === "POST") {
+if (!user.isLawyerVerified) return res.status(403).send("Verification required to publish");
+const { title, content, type, city, tags } = req.body || {};
+if (!title || !content || !type) return res.status(400).send("Missing fields");
+const post = await prisma.post.create({
+data: {
+title,
+content,
+type,
+city: type === "ISSUE" ? city || null : null,
+tags: Array.isArray(tags) ? tags : [],
+authorId: user.id
+}
+});
+return res.status(200).json(post);
+}
+
+if (req.method === "GET") {
+const posts = await prisma.post.findMany({ where: { authorId: user.id }, orderBy: { createdAt: "desc" } });
+return res.status(200).json(posts);
+}
+
+return res.status(405).end();
+}
+
+src/pages/api/auth/signin.tsx (simple sign-in UI to support credentials)
+tsx
+import { getProviders, signIn } from "next-auth/react";
+import { GetServerSideProps } from "next";
+import { useState } from "react";
+import Link from "next/link";
+
+export const getServerSideProps: GetServerSideProps = async () => {
+const providers = await getProviders();
+return { props: { providers } };
+};
+
+export default function SignIn({ providers }: any) {
+const [form, setForm] = useState({ email: "", password: "" });
+
+return (
+<div className="max-w-md mx-auto card">
+<h1 className="text-2xl font-semibold text-navy">Sign in</h1>
+<form
+className="mt-6 grid gap-4"
+onSubmit={async (e) => {
+e.preventDefault();
+await signIn("credentials", { email: form.email, password: form.password, callbackUrl: "/" });
+}}
+>
+<label className="grid gap-1">
+<span className="label">Email</span>
+<input className="input" type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required />
+</label>
+<label className="grid gap-1">
+<span className="label">Password</span>
+<input className="input" type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} required />
+</label>
+<button className="btn btn-primary">Sign in</button>
+</form>
+<p className="text-sm text-gray-600 mt-4">
+New here? <Link href="/signup" className="underline">Create an account</Link>
+</p>
+</div>
+);
+}
+
+TypeScript config
+tsconfig.json
+json
+{
+"compilerOptions": {
+"target": "ES2020",
+"lib": ["dom", "dom.iterable", "es2020"],
+"allowJs": false,
+"skipLibCheck": true,
+"strict": true,
+"noEmit": true,
+"module": "esnext",
+"moduleResolution": "bundler",
+"resolveJsonModule": true,
+"isolatedModules": true,
+"jsx": "preserve",
+"baseUrl": ".",
+"paths": {
+"@/": ["./src/"]
+}
+},
+"include": ["next-env.d.ts", "/*.ts", "/*.tsx"],
+"exclude": ["node_modules"]
+}
+
+next-env.d.ts
+ts
+/// <reference types="next" />
+/// <reference types="next/image-types/global" />
+
+// NOTE: This file should not be edited
+
+Notes and Next Steps
+Production DB: switch DATABASE_URL to Postgres and run migrations.
+Real verification: replace the demo rule in /api/verifyLawyer.ts with an integration to a bar registry or manual admin approval queue.
+Enhancements: full-text search, map view for issues, media uploads (e.g., S3), editorial moderation, role-based admin panel.
